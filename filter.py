@@ -39,8 +39,12 @@ class Gif(list):
         self.first_img.save(fname, save_all=True, duration=self.duration, append_images=self.append_images)
 
 
+def blur_img(orig_img):
+    return orig_img.filter(ImageFilter.GaussianBlur(radius=40))
+
+
 def create_blurred_img(orig_img, caption, font_file):
-    blurred_img = orig_img.filter(ImageFilter.GaussianBlur(radius=40))
+    blurred_img = blur_img(orig_img)
     font = find_fitting_font(font_file, orig_img.size[0] / 2, caption)
     draw = ImageDraw.Draw(blurred_img)
     draw.text(get_text_pos(orig_img.size, font.getsize(caption)), caption, font=font)
