@@ -25,8 +25,12 @@ def resize_img(img, aspect_ratio):
 def run(caption, in_file, out_file, font_file, aspect_ratio=1.0):
     img = Image.open(in_file)
     img = resize_img(img, aspect_ratio)
-    blurred_img = img.filter(ImageFilter.GaussianBlur(radius=40))
+    first_img = img.filter(ImageFilter.GaussianBlur(radius=40))
     font = find_fitting_font(font_file, img.size[0] / 2, caption)
-    draw = ImageDraw.Draw(blurred_img)
+    draw = ImageDraw.Draw(first_img)
     draw.text(get_text_pos(img.size, font.getsize(caption)), caption, font=font)
-    blurred_img.save(out_file, save_all=True, duration=[3000, 30000], append_images=[img])
+    blur_duration = 1000
+    blurred_frames = 10
+    blurred_durations = [blur_duration / blurred_frames] * blurred_frames
+    blur_sequence = [first_img] * blurred_frames
+    first_img.save(out_file, save_all=True, duration=[1] + blurred_durations + [30000], append_images=blur_sequence + [img])
