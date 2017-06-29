@@ -59,11 +59,12 @@ def render_progress(img, progress):
     """画像の下半分にプログレスをレンダリングする"""
     img = img.copy()
     progress_x_margin = 50
-    progress_x_max = img.width - progress_x_margin
+    progress_width_max = img.width - progress_x_margin * 2
     progress_y = img.height * 3/4
-    draw = ImageDraw.Draw(img)
-    crds = (progress_x_margin, progress_y, progress_x_max * progress, progress_y)
-    draw.line(crds, fill=128, width=3)
+    progress_x_1 = progress_x_margin
+    progress_x_2 = progress_x_1 + (progress_width_max * progress)
+    crds = (progress_x_1, progress_y, progress_x_2, progress_y)
+    ImageDraw.Draw(img).line(crds, fill=128, width=3)
     return img
 
 
