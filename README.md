@@ -19,7 +19,7 @@ filter.py \
     input.png \
     --out_file output.gif \
     --font_file font.ttf \
-    --size_ratio 0.25 \
+    --resize_ratio 0.25 \
     --settings_file settings.yml
 ```
 
