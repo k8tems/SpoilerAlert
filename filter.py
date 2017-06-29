@@ -48,14 +48,14 @@ def find_fitting_font(font_file, recommended_size, caption):
     assert()
 
 
-def draw_caption(img, caption, font_file):
+def render_caption(img, caption, font_file):
     font = find_fitting_font(font_file, (img.size[0] / 2, img.size[1] / 2), caption)
     draw = ImageDraw.Draw(img)
     draw.text(get_text_pos(img.size, font.getsize(caption)), caption, font=font)
     return img
 
 
-def draw_progress(img, progress):
+def render_progress(img, progress):
     return img
 
 
@@ -64,7 +64,7 @@ def run(caption, in_file, out_file, font_file, aspect_ratio=1.0):
     orig_img = resize_img(orig_img, aspect_ratio)
 
     filtered_img = blur_img(orig_img)
-    filtered_img = draw_caption(filtered_img, caption, font_file)
+    filtered_img = render_caption(filtered_img, caption, font_file)
 
     blur_duration = 2000
     blurred_frames = 10
@@ -72,6 +72,6 @@ def run(caption, in_file, out_file, font_file, aspect_ratio=1.0):
     gif = Gif()
     for i in range(blurred_frames):
         progress = i / blurred_frames
-        gif.append((draw_progress(filtered_img, progress), blur_duration / blurred_frames))
+        gif.append((render_progress(filtered_img, progress), blur_duration / blurred_frames))
     gif.append((orig_img, 30000))
     gif.save(out_file)
