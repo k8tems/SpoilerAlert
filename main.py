@@ -11,4 +11,4 @@ if __name__ == '__main__':
     font = ImageFont.truetype("arial")
     draw = ImageDraw.Draw(blurred_img)
     draw.text((10, 10), caption, font=font)
-    img.save(out_file, save_all=True, duration=[5000,30000], append_images=[blurred_img])
+    blurred_img.save(out_file, save_all=True, duration=[3000, 30000], append_images=[img])
