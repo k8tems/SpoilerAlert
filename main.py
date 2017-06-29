@@ -7,7 +7,7 @@ def get_text_pos(img_size, text_size):
     img_center_x = img_width / 2
     img_center_y = img_height / 2
     text_width, text_height = text_size
-    return (img_center_x - text_width / 2, img_center_y - text_height / 2)
+    return img_center_x - text_width / 2, img_center_y - text_height / 2
 
 
 if __name__ == '__main__':
