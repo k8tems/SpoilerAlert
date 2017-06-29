@@ -22,6 +22,24 @@ def resize_img(img, aspect_ratio):
     return img.resize((int(img_width * aspect_ratio), int(img_height * aspect_ratio)))
 
 
+class Gif(list):
+    @property
+    def append_images(self):
+        return [img for img, duration in self[1:]]
+
+    @property
+    def duration(self):
+        return [duration for img, duration in self]
+
+    @property
+    def first_img(self):
+        return self[0][0]
+
+    def save(self, fname):
+        self.first_img.save(fname, save_all=True, duration=self.duration, append_images=self.append_images)
+
+
+
 def run(caption, in_file, out_file, font_file, aspect_ratio=1.0):
     img = Image.open(in_file)
     img = resize_img(img, aspect_ratio)
@@ -29,8 +47,11 @@ def run(caption, in_file, out_file, font_file, aspect_ratio=1.0):
     font = find_fitting_font(font_file, img.size[0] / 2, caption)
     draw = ImageDraw.Draw(first_img)
     draw.text(get_text_pos(img.size, font.getsize(caption)), caption, font=font)
+
     blur_duration = 1000
     blurred_frames = 10
-    blurred_durations = [blur_duration / blurred_frames] * blurred_frames
-    blur_sequence = [first_img] * blurred_frames
-    first_img.save(out_file, save_all=True, duration=[1] + blurred_durations + [30000], append_images=blur_sequence + [img])
+
+    gif = Gif()
+    gif.append((first_img, 1))
+    gif += [(first_img, blur_duration / blurred_frames)] * blurred_frames
+    gif.save(out_file)
