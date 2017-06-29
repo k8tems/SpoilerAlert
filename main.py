@@ -23,7 +23,7 @@ if __name__ == '__main__':
     in_file = sys.argv[1]
     out_file = sys.argv[2]
     caption = sys.argv[3]
-    font_file = 'font.ttf'
+    font_file = sys.argv[4]
     img = Image.open(in_file)
     blurred_img = img.filter(ImageFilter.GaussianBlur(radius=40))
     font = find_fitting_font(font_file, img.size[0] / 2, caption)
