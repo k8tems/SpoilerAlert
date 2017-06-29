@@ -82,14 +82,26 @@ def load_settings(fname):
     return  yaml.load(open(fname).read())
 
 
-def run(caption, in_file, out_file, font_file, aspect_ratio, settings_file):
-    orig_img = Image.open(in_file)
-    orig_img = resize_img(orig_img, aspect_ratio)
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('caption', type=str)
+    parser.add_argument('in_file', type=str)
+    parser.add_argument('--out_file', type=str, default='out.gif')
+    parser.add_argument('--font_file', type=str, default='font.ttf')
+    parser.add_argument('--aspect_ratio', type=float, default=1.0)
+    parser.add_argument('--settings_file', default='settings.yml')
+    return parser.parse_args()
+
+
+def main():
+    args = parse_args()
+    orig_img = Image.open(args.in_file)
+    orig_img = resize_img(orig_img, args.aspect_ratio)
 
     filtered_img = blur_img(orig_img)
-    filtered_img = render_caption(filtered_img, caption, font_file)
+    filtered_img = render_caption(filtered_img, args.caption, args.font_file)
 
-    settings = load_settings(settings_file)
+    settings = load_settings(args.settings_file)
     adjust_color_settings(settings['progress'])
 
     blur_duration = settings['blur']['duration']
@@ -104,20 +116,8 @@ def run(caption, in_file, out_file, font_file, aspect_ratio, settings_file):
     # 元の画像は適当に長めの数字に設定する
     # 数字はファイルの大きさに影響しない
     gif.append((orig_img, settings['original']['duration']))
-    gif.save(out_file)
-
-
-def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('caption', type=str)
-    parser.add_argument('in_file', type=str)
-    parser.add_argument('--out_file', type=str, default='out.gif')
-    parser.add_argument('--font_file', type=str, default='font.ttf')
-    parser.add_argument('--aspect_ratio', type=float, default=1.0)
-    parser.add_argument('--settings_file', default='settings.yml')
-    return parser.parse_args()
+    gif.save(args.out_file)
 
 
 if __name__ == '__main__':
-    args = parse_args()
-    run(args.caption, args.in_file, args.out_file, args.font_file, args.aspect_ratio, args.settings_file)
+    main()
