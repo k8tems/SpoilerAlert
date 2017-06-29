@@ -73,7 +73,11 @@ def render_caption(img, caption, font_file):
 
 
 def render_progress(img, progress, settings):
-    """画像の下半分に左右から減っていくプログレスバーをレンダリングする"""
+    """
+    画像の下半分に左右から減っていくプログレスバーをレンダリングする
+    `progress`が0.0の場合最も長く、
+    `progress`が1.0の場合最も短い
+    """
     img = img.copy()
     progress_y = img.height * settings['y_ratio']
     progress_x_margin = img.width * settings['x_initial_margin_ratio']
