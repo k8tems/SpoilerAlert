@@ -35,16 +35,18 @@ def get_text_pos(img_size, text_size):
     return img_center_x - text_width / 2, img_center_y - text_height / 2
 
 
-def find_fitting_font(font_file, recommended_width, caption):
+def find_fitting_font(font_file, recommended_size, caption):
+    recommended_width, recommended_height = recommended_size
     for i in range(1, 500):
         font = ImageFont.truetype(font_file, size=i)
-        if font.getsize(caption)[0] > recommended_width:
+        if font.getsize(caption)[0] > recommended_width or \
+           font.getsize(caption)[1] > recommended_height:
             return font
     assert()
 
 
 def draw_caption(img, caption, font_file):
-    font = find_fitting_font(font_file,img.size[0] / 2, caption)
+    font = find_fitting_font(font_file, (img.size[0] / 2, img.size[1] / 2), caption)
     draw = ImageDraw.Draw(img)
     draw.text(get_text_pos(img.size, font.getsize(caption)), caption, font=font)
     return img
