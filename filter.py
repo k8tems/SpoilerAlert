@@ -56,6 +56,13 @@ def render_caption(img, caption, font_file):
 
 
 def render_progress(img, progress):
+    """画像の下半分にプログレスをレンダリングする"""
+    progress_x_margin = 50
+    progress_x_max = img.width - progress_x_margin
+    progress_y = img.height * 3/4
+    draw = ImageDraw.Draw(img)
+    crds = (progress_x_margin, progress_y, progress_x_max * progress, progress_y)
+    draw.line(crds, fill=128, width=3)
     return img
 
 
