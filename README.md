@@ -10,7 +10,7 @@ filter.py \
     --settings_file settings.yml
 ```
 
-### 出力例
+### 出力
 ![](examples/output.gif)
 
 ### TODO
