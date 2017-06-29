@@ -20,7 +20,7 @@ if __name__ == '__main__':
           'test.png ' \
           '--out_file %s ' \
           '--font_file font.ttf ' \
-          '--aspect_ratio %s ' \
+          '--size_ratio %s ' \
           '--settings_file custom.yml' % (out_file, 1/5)
     check_output(cmd, shell=True).decode()
     print('ファイルサイズ:', serialize_file_size(os.path.getsize(out_file)))
