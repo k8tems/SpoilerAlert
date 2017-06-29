@@ -14,9 +14,10 @@ if __name__ == '__main__':
     in_file = sys.argv[1]
     out_file = sys.argv[2]
     caption = sys.argv[3]
+    font_file = 'font.ttf'
     img = Image.open(in_file)
     blurred_img = img.filter(ImageFilter.GaussianBlur(radius=40))
-    font = ImageFont.truetype("font.ttf", size=100)
+    font = ImageFont.truetype(font_file, size=100)
     draw = ImageDraw.Draw(blurred_img)
     draw.text(get_text_pos(img.size, font.getsize(caption)), caption, font=font)
     blurred_img.save(out_file, save_all=True, duration=[3000, 30000], append_images=[img])
