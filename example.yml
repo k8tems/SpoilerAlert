@@ -1,0 +1,9 @@
+progress:
+    x_initial_margin_ratio: 0.4
+    y_ratio: 0.75
+    color: [255, 255, 255]
+blur:
+    duration: 1500
+    frames: 15
+original:
+    duration: 30000
