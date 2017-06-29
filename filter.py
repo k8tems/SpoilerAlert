@@ -39,6 +39,7 @@ def get_text_pos(img_size, text_size):
 
 
 def find_fitting_font(font_file, recommended_size, caption):
+    """総当りで`recommended_size`内に入るフォントサイズを探した後、該当フォントを返す"""
     recommended_width, recommended_height = recommended_size
     for i in range(1, 500):
         font = ImageFont.truetype(font_file, size=i)
