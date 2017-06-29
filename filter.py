@@ -77,10 +77,12 @@ def run(caption, in_file, out_file, font_file, aspect_ratio=1.0):
     filtered_img = blur_img(orig_img)
     filtered_img = render_caption(filtered_img, caption, font_file)
 
-    progress_settings = {
-        'x_initial_margin_ratio': 0.4,
-        'y_ratio': 0.75,
-        'color': (255, 255, 255),
+    settings = {
+        'progress':{
+            'x_initial_margin_ratio': 0.4,
+            'y_ratio': 0.75,
+            'color': (255, 255, 255),
+        }
     }
 
     blur_duration = 1500
@@ -89,9 +91,9 @@ def run(caption, in_file, out_file, font_file, aspect_ratio=1.0):
     gif = Gif()
     for i in range(blurred_frames):
         progress = i / blurred_frames
-        gif.append((render_progress(filtered_img, progress, progress_settings), blur_duration / blurred_frames))
+        gif.append((render_progress(filtered_img, progress, settings['progress']), blur_duration / blurred_frames))
     # 視覚的にプログレスが終われるようにフレームを追加する
-    gif.append((render_progress(filtered_img, 1, progress_settings), 100))
+    gif.append((render_progress(filtered_img, 1.0, settings['progress']), 100))
     # 元の画像は適当に長めの数字に設定する
     # 数字はファイルの大きさに影響しない
     gif.append((orig_img, 30000))
