@@ -75,7 +75,7 @@ def run(caption, in_file, out_file, font_file, aspect_ratio=1.0):
     filtered_img = blur_img(orig_img)
     filtered_img = render_caption(filtered_img, caption, font_file)
 
-    blur_duration = 2000
+    blur_duration = 1500
     blurred_frames = 30
 
     gif = Gif()
