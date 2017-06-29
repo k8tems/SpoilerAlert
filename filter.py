@@ -1,4 +1,4 @@
-import sys
+import argparse
 import yaml
 from PIL import Image, ImageFilter, ImageFont, ImageDraw
 
@@ -108,7 +108,6 @@ def run(caption, in_file, out_file, font_file, aspect_ratio=1.0, settings_file='
 
 
 def parse_args():
-    import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('caption')
     parser.add_argument('in_file')
