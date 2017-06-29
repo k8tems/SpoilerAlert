@@ -82,11 +82,15 @@ def run(caption, in_file, out_file, font_file, aspect_ratio=1.0):
             'x_initial_margin_ratio': 0.4,
             'y_ratio': 0.75,
             'color': (255, 255, 255),
+        },
+        'blur': {
+            'duration': 1500,
+            'frames': 15
         }
     }
 
-    blur_duration = 1500
-    blurred_frames = 15
+    blur_duration = settings['blur']['duration']
+    blurred_frames = settings['blur']['frames']
 
     gif = Gif()
     for i in range(blurred_frames):
