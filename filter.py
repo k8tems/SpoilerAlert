@@ -84,6 +84,7 @@ def run(caption, in_file, out_file, font_file, aspect_ratio=1.0):
     for i in range(blurred_frames):
         progress = i / blurred_frames
         gif.append((render_progress(filtered_img, progress), blur_duration / blurred_frames))
+    # 視覚的にプログレスが終われるようにフレームを追加する
     gif.append((render_progress(filtered_img, 1), 100))
     gif.append((orig_img, 30000))
     gif.save(out_file)
