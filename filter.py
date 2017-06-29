@@ -1,3 +1,4 @@
+import yaml
 from PIL import Image, ImageFilter, ImageFont, ImageDraw
 
 
@@ -70,6 +71,16 @@ def render_progress(img, progress, settings):
     return img
 
 
+def adjust_color_settings(settings):
+    # yamlはtuple型に対応していないのでここで変換する
+    r, g, b = settings['color']
+    settings['color'] = r, g, b
+
+
+def load_settings():
+    return  yaml.load(open('settings.yml').read())
+
+
 def run(caption, in_file, out_file, font_file, aspect_ratio=1.0):
     orig_img = Image.open(in_file)
     orig_img = resize_img(orig_img, aspect_ratio)
@@ -77,20 +88,8 @@ def run(caption, in_file, out_file, font_file, aspect_ratio=1.0):
     filtered_img = blur_img(orig_img)
     filtered_img = render_caption(filtered_img, caption, font_file)
 
-    settings = {
-        'progress':{
-            'x_initial_margin_ratio': 0.4,
-            'y_ratio': 0.75,
-            'color': (255, 255, 255),
-        },
-        'blur': {
-            'duration': 1500,
-            'frames': 15
-        },
-        'original': {
-            'duration': 30000
-        }
-    }
+    settings = load_settings()
+    adjust_color_settings(settings['progress'])
 
     blur_duration = settings['blur']['duration']
     blurred_frames = settings['blur']['frames']
