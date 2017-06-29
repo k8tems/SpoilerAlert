@@ -19,14 +19,18 @@ def find_fitting_font(font_file, recommended_width, caption):
     assert()
 
 
-if __name__ == '__main__':
-    caption = sys.argv[1]
-    in_file = sys.argv[2]
-    out_file = sys.argv[3]
-    font_file = sys.argv[4]
+def run(caption, in_file, out_file, font_file):
     img = Image.open(in_file)
     blurred_img = img.filter(ImageFilter.GaussianBlur(radius=40))
     font = find_fitting_font(font_file, img.size[0] / 2, caption)
     draw = ImageDraw.Draw(blurred_img)
     draw.text(get_text_pos(img.size, font.getsize(caption)), caption, font=font)
     blurred_img.save(out_file, save_all=True, duration=[3000, 30000], append_images=[img])
+
+
+if __name__ == '__main__':
+    caption = sys.argv[1]
+    in_file = sys.argv[2]
+    out_file = sys.argv[3]
+    font_file = sys.argv[4]
+    run(caption, in_file, out_file, font_file)
