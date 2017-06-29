@@ -57,7 +57,6 @@ def run(caption, in_file, out_file, font_file, aspect_ratio=1.0):
     blurred_frames = 10
 
     gif = Gif()
-    gif.append((blurred_img, 1))
     gif += [(blurred_img, blur_duration / blurred_frames)] * blurred_frames
     gif.append((orig_img, 30000))
     gif.save(out_file)
