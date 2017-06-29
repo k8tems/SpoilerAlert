@@ -57,16 +57,16 @@ def render_caption(img, caption, font_file):
     return img
 
 
-def render_progress(img, progress):
+def render_progress(img, progress, settings):
     """画像の下半分に左右から減っていくプログレスバーをレンダリングする"""
     img = img.copy()
-    progress_y = img.height * 3/4
-    progress_x_margin = img.width * 0.4
+    progress_y = img.height * settings['y_ratio']
+    progress_x_margin = img.width * settings['x_initial_margin_ratio']
     progress_initial_length = img.width - progress_x_margin * 2
     progress_length = progress_initial_length * (1 - progress)
     progress_x = img.width / 2 - progress_length / 2
     crds = (progress_x, progress_y, progress_x + progress_length, progress_y)
-    ImageDraw.Draw(img).line(crds, fill=(255, 255, 255), width=3)
+    ImageDraw.Draw(img).line(crds, fill=settings['color'], width=3)
     return img
 
 
@@ -77,15 +77,21 @@ def run(caption, in_file, out_file, font_file, aspect_ratio=1.0):
     filtered_img = blur_img(orig_img)
     filtered_img = render_caption(filtered_img, caption, font_file)
 
+    progress_settings = {
+        'x_initial_margin_ratio': 0.4,
+        'y_ratio': 0.75,
+        'color': (255, 255, 255),
+    }
+
     blur_duration = 1500
     blurred_frames = 15
 
     gif = Gif()
     for i in range(blurred_frames):
         progress = i / blurred_frames
-        gif.append((render_progress(filtered_img, progress), blur_duration / blurred_frames))
+        gif.append((render_progress(filtered_img, progress, progress_settings), blur_duration / blurred_frames))
     # 視覚的にプログレスが終われるようにフレームを追加する
-    gif.append((render_progress(filtered_img, 1), 100))
+    gif.append((render_progress(filtered_img, 1, progress_settings), 100))
     # 元の画像は適当に長めの数字に設定する
     # 数字はファイルの大きさに影響しない
     gif.append((orig_img, 30000))
