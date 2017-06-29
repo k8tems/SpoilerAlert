@@ -6,6 +6,12 @@
 - 適当なフォントの入った`font.ttf`
 
 
+### 依存性のインストール
+```
+pip install -r requirements.txt
+```
+
+
 ### 使用例
 ```
 filter.py \
