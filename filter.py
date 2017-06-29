@@ -43,19 +43,19 @@ def blur_img(orig_img):
     return orig_img.filter(ImageFilter.GaussianBlur(radius=40))
 
 
-def create_blurred_img(orig_img, caption, font_file):
-    blurred_img = blur_img(orig_img)
-    font = find_fitting_font(font_file, orig_img.size[0] / 2, caption)
-    draw = ImageDraw.Draw(blurred_img)
-    draw.text(get_text_pos(orig_img.size, font.getsize(caption)), caption, font=font)
-    return blurred_img
+def filter_img(img, caption, font_file):
+    font = find_fitting_font(font_file,img.size[0] / 2, caption)
+    draw = ImageDraw.Draw(img)
+    draw.text(get_text_pos(img.size, font.getsize(caption)), caption, font=font)
+    return img
 
 
 def run(caption, in_file, out_file, font_file, aspect_ratio=1.0):
     orig_img = Image.open(in_file)
     orig_img = resize_img(orig_img, aspect_ratio)
 
-    blurred_img = create_blurred_img(orig_img, caption, font_file)
+    filtered_img = blur_img(orig_img)
+    blurred_img = filter_img(filtered_img, caption, font_file)
 
     blur_duration = 2000
     blurred_frames = 10
