@@ -77,18 +77,18 @@ def adjust_color_settings(settings):
     settings['color'] = r, g, b
 
 
-def load_settings():
-    return  yaml.load(open('settings.yml').read())
+def load_settings(fname):
+    return  yaml.load(open(fname).read())
 
 
-def run(caption, in_file, out_file, font_file, aspect_ratio=1.0):
+def run(caption, in_file, out_file, font_file, aspect_ratio=1.0, settings_file='settings.yml'):
     orig_img = Image.open(in_file)
     orig_img = resize_img(orig_img, aspect_ratio)
 
     filtered_img = blur_img(orig_img)
     filtered_img = render_caption(filtered_img, caption, font_file)
 
-    settings = load_settings()
+    settings = load_settings(settings_file)
     adjust_color_settings(settings['progress'])
 
     blur_duration = settings['blur']['duration']
