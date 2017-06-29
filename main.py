@@ -1,7 +1,10 @@
+import sys
 from PIL import Image, ImageFilter
 
 
 if __name__ == '__main__':
-    img = Image.open ('test.png')
+    in_file = sys.argv[1]
+    out_file = sys.argv[2]
+    img = Image.open (in_file)
     blurred_img = img.filter(ImageFilter.GaussianBlur(radius=40))
-    img.save('out.gif', save_all=True, append_images=[blurred_img])
+    img.save(out_file, save_all=True, append_images=[blurred_img])
