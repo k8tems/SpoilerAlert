@@ -82,7 +82,7 @@ def load_settings(fname):
     return  yaml.load(open(fname).read())
 
 
-def run(caption, in_file, out_file, font_file, aspect_ratio=1.0, settings_file='settings.yml'):
+def run(caption, in_file, out_file, font_file, aspect_ratio, settings_file):
     orig_img = Image.open(in_file)
     orig_img = resize_img(orig_img, aspect_ratio)
 
