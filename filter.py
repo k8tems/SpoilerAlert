@@ -3,13 +3,13 @@ import yaml
 from PIL import Image, ImageFilter, ImageFont, ImageDraw
 
 
-def resize_img(img, size_ratio):
+def resize_img(img, resize_ratio):
     """
     画像を指定の倍率に調節する
     画像を動画化するとファイルの大きさが気になるので節約用
     """
     img_width, img_height = img.size
-    return img.resize((int(img_width * size_ratio), int(img_height * size_ratio)))
+    return img.resize((int(img_width * resize_ratio), int(img_height * resize_ratio)))
 
 
 class Gif(list):
@@ -105,7 +105,7 @@ def parse_args():
     parser.add_argument('in_file', type=str)
     parser.add_argument('--out_file', type=str, default='out.gif')
     parser.add_argument('--font_file', type=str, default='font.ttf')
-    parser.add_argument('--size_ratio', type=float, default=1.0)
+    parser.add_argument('--resize_ratio', type=float, default=1.0)
     parser.add_argument('--settings_file', default='settings.yml')
     return parser.parse_args()
 
@@ -113,7 +113,7 @@ def parse_args():
 def main():
     args = parse_args()
     orig_img = Image.open(args.in_file)
-    orig_img = resize_img(orig_img, args.size_ratio)
+    orig_img = resize_img(orig_img, args.resize_ratio)
 
     filtered_img = blur_img(orig_img)
     filtered_img = render_caption(filtered_img, args.caption, args.font_file)
