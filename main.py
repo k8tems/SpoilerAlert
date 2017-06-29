@@ -3,7 +3,10 @@ from PIL import Image, ImageFilter, ImageFont, ImageDraw
 
 
 def get_text_pos(img_size, font):
-    return (10, 10)
+    img_width, img_height = img_size
+    img_center_x = img_width / 2
+    img_center_y = img_height / 2
+    return (img_center_x, img_center_y)
 
 
 if __name__ == '__main__':
