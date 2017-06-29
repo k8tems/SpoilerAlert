@@ -10,7 +10,7 @@ def get_text_pos(img_size, text_size):
 
 
 def find_fitting_font(font_file, recommended_width, caption):
-    for i in range(1, 200):
+    for i in range(1, 500):
         font = ImageFont.truetype(font_file, size=i)
         if font.getsize(caption)[0] > recommended_width:
             return font
