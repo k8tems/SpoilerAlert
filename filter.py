@@ -64,7 +64,7 @@ def render_progress(img, progress):
     progress_x_1 = progress_x_margin + (progress_width_max * progress)
     progress_x_2 = progress_x_margin + progress_width_max
     crds = (progress_x_1, progress_y, progress_x_2, progress_y)
-    ImageDraw.Draw(img).line(crds, fill=128, width=3)
+    ImageDraw.Draw(img).line(crds, fill=(255, 255, 255), width=3)
     return img
 
 
