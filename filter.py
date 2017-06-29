@@ -17,8 +17,14 @@ def find_fitting_font(font_file, recommended_width, caption):
     assert()
 
 
-def run(caption, in_file, out_file, font_file):
+def resize_img(img, aspect_ratio):
+    img_width, img_height = img.size
+    return img.resize((int(img_width * aspect_ratio), int(img_height * aspect_ratio)))
+
+
+def run(caption, in_file, out_file, font_file, aspect_ratio=1.0):
     img = Image.open(in_file)
+    img = resize_img(img, aspect_ratio)
     blurred_img = img.filter(ImageFilter.GaussianBlur(radius=40))
     font = find_fitting_font(font_file, img.size[0] / 2, caption)
     draw = ImageDraw.Draw(blurred_img)
