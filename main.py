@@ -10,6 +10,15 @@ def get_text_pos(img_size, text_size):
     return img_center_x - text_width / 2, img_center_y - text_height / 2
 
 
+def find_fitting_font(font_file, recommended_width, caption):
+    for i in range(1, 200):
+        font = ImageFont.truetype(font_file, size=i)
+        if font.getsize(caption)[0] > recommended_width:
+            print('using font with size %d' % i)
+            return font
+    assert()
+
+
 if __name__ == '__main__':
     in_file = sys.argv[1]
     out_file = sys.argv[2]
@@ -17,7 +26,7 @@ if __name__ == '__main__':
     font_file = 'font.ttf'
     img = Image.open(in_file)
     blurred_img = img.filter(ImageFilter.GaussianBlur(radius=40))
-    font = ImageFont.truetype(font_file, size=100)
+    font = find_fitting_font(font_file, img.size[0] / 2, caption)
     draw = ImageDraw.Draw(blurred_img)
     draw.text(get_text_pos(img.size, font.getsize(caption)), caption, font=font)
     blurred_img.save(out_file, save_all=True, duration=[3000, 30000], append_images=[img])
