@@ -61,7 +61,7 @@ def render_progress(img, progress):
     """画像の下半分に左右から減っていくプログレスバーをレンダリングする"""
     img = img.copy()
     progress_y = img.height * 3/4
-    progress_x_margin = img.width * 1/3
+    progress_x_margin = img.width * 0.4
     progress_initial_length = img.width - progress_x_margin * 2
     progress_length = progress_initial_length * (1 - progress)
     progress_x = img.width / 2 - progress_length / 2
@@ -78,7 +78,7 @@ def run(caption, in_file, out_file, font_file, aspect_ratio=1.0):
     filtered_img = render_caption(filtered_img, caption, font_file)
 
     blur_duration = 1500
-    blurred_frames = 30
+    blurred_frames = 15
 
     gif = Gif()
     for i in range(blurred_frames):
