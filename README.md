@@ -1,6 +1,6 @@
 ### ネタバレフィルター適用スクリプト
 ```
-main.py input.png output.gif ネタバレだよ
+main.py ネタバレだよ input.png output.gif font.ttf
 ```
 
 - [ ] ツイッターのメディアURLを渡したらフィルターを適用してメディアとしてアップロードし直す
