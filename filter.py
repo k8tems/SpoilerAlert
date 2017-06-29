@@ -50,6 +50,7 @@ def find_fitting_font(font_file, recommended_size, caption):
 
 
 def render_caption(img, caption, font_file):
+    """画像の上半分に文字列をレンダリングする"""
     font = find_fitting_font(font_file, (img.size[0] / 2, img.size[1] / 2), caption)
     draw = ImageDraw.Draw(img)
     draw.text(get_text_pos(img.size, font.getsize(caption)), caption, font=font)
