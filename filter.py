@@ -107,11 +107,18 @@ def run(caption, in_file, out_file, font_file, aspect_ratio=1.0, settings_file='
     gif.save(out_file)
 
 
+def parse_args():
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('caption')
+    parser.add_argument('in_file')
+    parser.add_argument('out_file')
+    parser.add_argument('font_file')
+    parser.add_argument('--aspect_ratio', type=float, default=1.0)
+    parser.add_argument('--settings_file', default='settings.yml')
+    return parser.parse_args()
+
+
 if __name__ == '__main__':
-    caption = sys.argv[1]
-    in_file = sys.argv[2]
-    out_file = sys.argv[3]
-    font_file = sys.argv[4]
-    aspect_ratio = float(sys.argv[5])
-    settings_file = sys.argv[6]
-    run(caption, in_file, out_file, font_file, aspect_ratio, settings_file)
+    args = parse_args()
+    run(args.caption, args.in_file, args.out_file, args.font_file, args.aspect_ratio, args.settings_file)
