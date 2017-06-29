@@ -58,14 +58,14 @@ def render_caption(img, caption, font_file):
 
 
 def render_progress(img, progress):
-    """画像の下半分に左から減っていくプログレスバーをレンダリングする"""
+    """画像の下半分に左右から減っていくプログレスバーをレンダリングする"""
     img = img.copy()
-    progress_x_margin = img.width * 1/3
-    progress_width_max = img.width - progress_x_margin * 2
     progress_y = img.height * 3/4
-    progress_x_1 = progress_x_margin + (progress_width_max * progress)
-    progress_x_2 = progress_x_margin + progress_width_max
-    crds = (progress_x_1, progress_y, progress_x_2, progress_y)
+    progress_x_margin = img.width * 1/3
+    progress_initial_length = img.width - progress_x_margin * 2
+    progress_length = progress_initial_length * (1 - progress)
+    progress_x = img.width / 2 - progress_length / 2
+    crds = (progress_x, progress_y, progress_x + progress_length, progress_y)
     ImageDraw.Draw(img).line(crds, fill=(255, 255, 255), width=3)
     return img
 
