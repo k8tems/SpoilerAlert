@@ -55,6 +55,10 @@ def draw_caption(img, caption, font_file):
     return img
 
 
+def draw_progress(img, progress):
+    return img
+
+
 def run(caption, in_file, out_file, font_file, aspect_ratio=1.0):
     orig_img = Image.open(in_file)
     orig_img = resize_img(orig_img, aspect_ratio)
@@ -67,6 +71,7 @@ def run(caption, in_file, out_file, font_file, aspect_ratio=1.0):
 
     gif = Gif()
     for i in range(blurred_frames):
-        gif.append((filtered_img, blur_duration / blurred_frames))
+        progress = i / blurred_frames
+        gif.append((draw_progress(filtered_img, progress), blur_duration / blurred_frames))
     gif.append((orig_img, 30000))
     gif.save(out_file)
