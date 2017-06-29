@@ -86,6 +86,9 @@ def run(caption, in_file, out_file, font_file, aspect_ratio=1.0):
         'blur': {
             'duration': 1500,
             'frames': 15
+        },
+        'original': {
+            'duration': 30000
         }
     }
 
@@ -100,5 +103,5 @@ def run(caption, in_file, out_file, font_file, aspect_ratio=1.0):
     gif.append((render_progress(filtered_img, 1.0, settings['progress']), 100))
     # 元の画像は適当に長めの数字に設定する
     # 数字はファイルの大きさに影響しない
-    gif.append((orig_img, 30000))
+    gif.append((orig_img, settings['original']['duration']))
     gif.save(out_file)
