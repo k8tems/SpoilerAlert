@@ -13,7 +13,6 @@ def find_fitting_font(font_file, recommended_width, caption):
     for i in range(1, 200):
         font = ImageFont.truetype(font_file, size=i)
         if font.getsize(caption)[0] > recommended_width:
-            print('using font with size %d' % i)
             return font
     assert()
 
