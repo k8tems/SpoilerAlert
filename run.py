@@ -15,5 +15,5 @@ def serialize_file_size(file_size):
 
 if __name__ == '__main__':
     out_file = 'out.gif'
-    filter.run('FFXVネタバレ', 'test.png', out_file, 'font.ttf')
+    filter.run('FFXVネタバレ', 'test.png', out_file, 'font.ttf', aspect_ratio=1/4)
     print('ファイルサイズ:', serialize_file_size(os.path.getsize(out_file)))
