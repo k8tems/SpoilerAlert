@@ -41,18 +41,18 @@ class Gif(list):
 
 
 def run(caption, in_file, out_file, font_file, aspect_ratio=1.0):
-    img = Image.open(in_file)
-    img = resize_img(img, aspect_ratio)
-    first_img = img.filter(ImageFilter.GaussianBlur(radius=40))
-    font = find_fitting_font(font_file, img.size[0] / 2, caption)
-    draw = ImageDraw.Draw(first_img)
-    draw.text(get_text_pos(img.size, font.getsize(caption)), caption, font=font)
+    orig_img = Image.open(in_file)
+    orig_img = resize_img(orig_img, aspect_ratio)
+    blurred_img = orig_img.filter(ImageFilter.GaussianBlur(radius=40))
+    font = find_fitting_font(font_file, orig_img.size[0] / 2, caption)
+    draw = ImageDraw.Draw(blurred_img)
+    draw.text(get_text_pos(orig_img.size, font.getsize(caption)), caption, font=font)
 
     blur_duration = 1000
     blurred_frames = 10
 
     gif = Gif()
-    gif.append((first_img, 1))
-    gif += [(first_img, blur_duration / blurred_frames)] * blurred_frames
-    gif.append((img, 30000))
+    gif.append((blurred_img, 1))
+    gif += [(blurred_img, blur_duration / blurred_frames)] * blurred_frames
+    gif.append((orig_img, 30000))
     gif.save(out_file)
