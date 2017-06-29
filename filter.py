@@ -30,9 +30,12 @@ def blur_img(orig_img):
 def get_text_pos(img_size, text_size):
     img_width, img_height = img_size
     img_center_x = img_width / 2
-    img_center_y = img_height / 2
+    # 文字列は画像の上半分にレンダリングする
+    img_center_y = img_height / 2 / 2
     text_width, text_height = text_size
-    return img_center_x - text_width / 2, img_center_y - text_height / 2
+    text_x = img_center_x - text_width / 2
+    text_y = img_center_y - text_height / 2
+    return text_x, text_y
 
 
 def find_fitting_font(font_file, recommended_size, caption):
