@@ -4,6 +4,10 @@ from PIL import Image, ImageFilter, ImageFont, ImageDraw
 
 
 def resize_img(img, aspect_ratio):
+    """
+    画像を指定のアスペクト比に調節する
+    画像を動画化するとファイルの大きさが気になるので節約用
+    """
     img_width, img_height = img.size
     return img.resize((int(img_width * aspect_ratio), int(img_height * aspect_ratio)))
 
@@ -26,10 +30,16 @@ class Gif(list):
 
 
 def blur_img(orig_img):
+    """与えられた画像をぼかす"""
     return orig_img.filter(ImageFilter.GaussianBlur(radius=40))
 
 
 def get_text_pos(img_size, text_size):
+    """
+    文字列のレンダリングする位置を返す
+    x座標は文字列が画像の中央、
+    y座標は画像の上半分中央に来るように調節する
+    """
     img_width, img_height = img_size
     img_center_x = img_width / 2
     # 文字列は画像の上半分にレンダリングする
@@ -41,7 +51,10 @@ def get_text_pos(img_size, text_size):
 
 
 def find_fitting_font(font_file, recommended_size, caption):
-    """総当りで`recommended_size`内に入るフォントサイズを探した後、該当フォントを返す"""
+    """
+    総当りで`recommended_size`内に入るフォントサイズを探した後、
+    該当フォントを返す
+    """
     recommended_width, recommended_height = recommended_size
     for i in range(1, 500):
         font = ImageFont.truetype(font_file, size=i)
