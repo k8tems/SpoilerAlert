@@ -1,3 +1,4 @@
+import sys
 import yaml
 from PIL import Image, ImageFilter, ImageFont, ImageDraw
 
@@ -104,3 +105,13 @@ def run(caption, in_file, out_file, font_file, aspect_ratio=1.0, settings_file='
     # 数字はファイルの大きさに影響しない
     gif.append((orig_img, settings['original']['duration']))
     gif.save(out_file)
+
+
+if __name__ == '__main__':
+    caption = sys.argv[1]
+    in_file = sys.argv[2]
+    out_file = sys.argv[3]
+    font_file = sys.argv[4]
+    aspect_ratio = float(sys.argv[5])
+    settings_file = sys.argv[6]
+    run(caption, in_file, out_file, font_file, aspect_ratio, settings_file)
