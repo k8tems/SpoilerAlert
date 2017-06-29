@@ -1,5 +1,5 @@
 import os
-import filter
+from subprocess import check_output
 
 
 def serialize_file_size(file_size):
@@ -15,5 +15,6 @@ def serialize_file_size(file_size):
 
 if __name__ == '__main__':
     out_file = 'out.gif'
-    filter.run('FFXVネタバレ', 'test.png', out_file, 'font.ttf', aspect_ratio=1/5, settings_file='custom.yml')
+    cmd = 'python filter.py FFXVネタバレ test.png %s font.ttf %s custom.yml' % (out_file, 1/5)
+    check_output(cmd, shell=True).decode()
     print('ファイルサイズ:', serialize_file_size(os.path.getsize(out_file)))
