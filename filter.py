@@ -111,7 +111,7 @@ def main():
     for i in range(blurred_frames):
         progress = i / blurred_frames
         gif.append((render_progress(filtered_img, progress, settings['progress']), blur_duration / blurred_frames))
-    # 視覚的にプログレスが終われるようにフレームを追加する
+    # 視覚的にプログレスが終わるようにフレームを追加する
     gif.append((render_progress(filtered_img, 1.0, settings['progress']), 100))
     # 元の画像は適当に長めの数字に設定する
     # 数字はファイルの大きさに影響しない
