@@ -22,5 +22,6 @@ if __name__ == '__main__':
           '--font_file font.ttf ' \
           '--resize_ratio %s ' \
           '--settings_file custom.yml' % (out_file, 1)
-    check_output(cmd, shell=True).decode()
+    output = check_output(cmd, shell=True).decode()
+    print(output)
     print('ファイルサイズ:', serialize_file_size(os.path.getsize(out_file)))
