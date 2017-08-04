@@ -152,6 +152,7 @@ def main():
         gif = filter_image(orig_img, args.caption, args.resize_ratio, args.settings_file, args.font_file)
         gif.save(gif_path)
         video.gif_to_mp4(gif_path, mp4_path)
+        video.merge_videos(mp4_path, args.in_file, args.out_file)
     else:
         orig_img = Image.open(args.in_file)
         gif = filter_image(orig_img, args.caption, args.resize_ratio, args.settings_file, args.font_file)

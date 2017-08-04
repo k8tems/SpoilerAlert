@@ -17,12 +17,8 @@ def gif_to_mp4(src, dest):
     run_ffmpeg('-i "%s" -f lavfi -i aevalsrc=0 -shortest -y "%s"' % (src, dest))
 
 
-def merge_videos(vid1, vid2):
-    ff = ffmpy.FFmpeg(
-        inputs={'"concat:%s|%s"' % (vid1, vid2): None},
-        outputs={'output.mp4': '-c copy -bsf:a aac_adtstoasc'}
-    )
-    ff.run()
+def merge_videos(src1, src2, dest):
+    run_ffmpeg('-i "%s" -i "%s" -filter_complex "[0:0][0:1][1:0][1:1] concat=n=2:v=1:a=1" "%s"' % (src1, src2, dest))
 
 
 if __name__ == '__main__':
