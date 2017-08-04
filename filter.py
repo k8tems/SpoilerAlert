@@ -138,7 +138,8 @@ def filter_image(orig_img, caption, resize_ratio, settings_file, font_file):
 def main():
     args = parse_args()
     if video.is_video(args.in_file):
-        orig_img = video.get_first_frame(args.in_file)
+        video.get_first_frame(args.in_file, 'frame.png')
+        orig_img = Image.open('frame.png')
         gif = filter_image(orig_img, args.caption, args.resize_ratio, args.settings_file, args.font_file)
         gif.save(args.out_file)
     else:

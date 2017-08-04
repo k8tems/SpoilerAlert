@@ -1,21 +1,20 @@
 from subprocess import check_output
 
 
-def get_first_frame(in_file, out_file):
-    cmd = 'bin\\ffmpeg -i %s -vf "select=eq(n\\,0)" -q:v 3 %s' % (in_file, out_file)
-    check_output(cmd)
+def run_ffmpeg(cmd):
+    check_output('bin\\ffmpeg %s' % cmd)
+
+
+def get_first_frame(src, dest):
+    run_ffmpeg('-i "%s" -vf "select=eq(n\\,0)" -q:v 3 "%s"' % (src, dest))
 
 
 def is_video(file):
-    return 'mp4' in av.open(file).format.name
+    return file.endswith('mp4')
 
 
 def gif_to_mp4(src, dest):
-    ff = ffmpy.FFmpeg(
-        inputs={src: None},
-        outputs={dest: None},
-    )
-    ff.run()
+    run_ffmpeg('-i "%s" -f lavfi -i aevalsrc=0 -shortest -y "%s"' % (src, dest))
 
 
 def merge_videos(vid1, vid2):
@@ -27,4 +26,4 @@ def merge_videos(vid1, vid2):
 
 
 if __name__ == '__main__':
-    get_first_frame('test.mp4', 'frame.png')
+    gif_to_mp4('mp4_out.gif', 'out.mp4')
