@@ -151,9 +151,13 @@ class TemporaryDirectory(object):
         os.rmdir(self.dir)
 
 
+def get_temp_file_name():
+    return tempfile._get_candidate_names().__next__()
+
+
 class TemporaryFile(object):
-    def __init__(self, temp_dir, fname):
-        self.file = os.path.join(temp_dir, fname)
+    def __init__(self, temp_dir, extension):
+        self.file = os.path.join(temp_dir, '%s.%s' % (get_temp_file_name(), extension))
 
     def __enter__(self):
         return self.file
@@ -168,11 +172,13 @@ def main():
         # `NamedTemporaryFile`はWindowsだとサブプロセスから開けないので自分で実装する必要がある
         # https://stackoverflow.com/questions/15169101/how-to-create-a-temporary-file-that-can-be-read-by-a-subprocess
         with TemporaryDirectory() as temp_dir, \
-                TemporaryFile(temp_dir, 'frame.png') as frame_path, \
-                TemporaryFile(temp_dir, 'temp.gif') as gif_path, \
-                TemporaryFile(temp_dir, 'temp1.mp4') as mp4_path_1, \
-                TemporaryFile(temp_dir, 'temp2.mp4') as mp4_path_2:
+                TemporaryFile(temp_dir, 'png') as frame_path, \
+                TemporaryFile(temp_dir, 'gif') as gif_path, \
+                TemporaryFile(temp_dir, 'mp4') as mp4_path_1, \
+                TemporaryFile(temp_dir, 'mp4') as mp4_path_2:
             logger.info('temp_dir ' + temp_dir)
+            logger.info('gif_path ' + gif_path)
+            logger.info('mp4_path_1 ' + mp4_path_1)
             video.get_first_frame(args.in_file, frame_path)
             orig_img = Image.open(frame_path)
             gif = filter_image(orig_img, args.caption, args.resize_ratio, args.settings_file, args.font_file)
