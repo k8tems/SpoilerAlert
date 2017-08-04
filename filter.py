@@ -173,18 +173,18 @@ def main():
         # https://stackoverflow.com/questions/15169101/how-to-create-a-temporary-file-that-can-be-read-by-a-subprocess
         with TemporaryDirectory() as temp_dir, \
                 TemporaryFile(temp_dir, 'png') as frame_path, \
-                TemporaryFile(temp_dir, 'gif') as gif_path, \
-                TemporaryFile(temp_dir, 'mp4') as mp4_path_1, \
-                TemporaryFile(temp_dir, 'mp4') as mp4_path_2:
+                TemporaryFile(temp_dir, 'gif') as filtered_path, \
+                TemporaryFile(temp_dir, 'mp4') as inaudible_video_path, \
+                TemporaryFile(temp_dir, 'mp4') as audible_video_path:
             logger.info('temp_dir ' + temp_dir)
-            logger.info('gif_path ' + gif_path)
-            logger.info('mp4_path_1 ' + mp4_path_1)
+            logger.info('filtered_path ' + filtered_path)
+            logger.info('inaudible_video_path ' + inaudible_video_path)
             video.get_first_frame(args.in_file, frame_path)
             orig_img = Image.open(frame_path)
             gif = filter_image(orig_img, args.caption, args.resize_ratio, args.settings_file, args.font_file)
-            gif.save(gif_path)
-            video.gif_to_mp4(gif_path, mp4_path_1, mp4_path_2)
-            video.merge_videos(mp4_path_2, args.in_file, args.out_file)
+            gif.save(filtered_path)
+            video.gif_to_mp4(filtered_path, inaudible_video_path, audible_video_path)
+            video.merge_videos(audible_video_path, args.in_file, args.out_file)
     else:
         orig_img = Image.open(args.in_file)
         gif = filter_image(orig_img, args.caption, args.resize_ratio, args.settings_file, args.font_file)
