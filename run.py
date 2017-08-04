@@ -14,14 +14,15 @@ def serialize_file_size(file_size):
 
 
 if __name__ == '__main__':
-    out_file = 'out.mp4'
+    in_file = 'video__in.mp4'
+    out_file = 'video__out.mp4'
     cmd = 'python filter.py ' \
           'FFXVネタバレ ' \
-          'test.mp4 ' \
+          '%s ' \
           '--out_file %s ' \
           '--font_file font.ttf ' \
           '--resize_ratio %s ' \
-          '--settings_file custom.yml' % (out_file, 1)
+          '--settings_file custom.yml' % (in_file, out_file, 1)
     output = check_output(cmd, shell=True).decode()
     print(output)
     print('ファイルサイズ:', serialize_file_size(os.path.getsize(out_file)))
