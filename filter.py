@@ -145,24 +145,34 @@ def temp_opener(name, flag, mode=0o777):
     return os.open(name, flag | os.O_TEMPORARY, mode)
 
 
+class TemporaryDirectory(object):
+    def __init__(self):
+        self.dir = tempfile.mkdtemp()
+
+    def __enter__(self):
+        return self.dir
+
+    def __exit__(self, *args, **kwargs):
+        os.rmdir(self.dir)
+
+
 def main():
     args = parse_args()
     if video.is_video(args.in_file):
         # `NamedTemporaryFile`はWindowsだとサブプロセスから開けないので自分で実装する必要がある
         # https://stackoverflow.com/questions/15169101/how-to-create-a-temporary-file-that-can-be-read-by-a-subprocess
-        temp_dir = tempfile.mkdtemp()
-        frame_path = os.path.join(temp_dir, 'frame.png')
-        gif_path = get_temp_path('temp.gif')
-        mp4_path_1 = get_temp_path('temp1.mp4')
-        mp4_path_2 = get_temp_path('temp2.mp4')
-        video.get_first_frame(args.in_file, frame_path)
-        orig_img = Image.open(frame_path)
-        gif = filter_image(orig_img, args.caption, args.resize_ratio, args.settings_file, args.font_file)
-        gif.save(gif_path)
-        video.gif_to_mp4(gif_path, mp4_path_1, mp4_path_2)
-        video.merge_videos(mp4_path_2, args.in_file, args.out_file)
-        os.remove(frame_path)
-        os.rmdir(temp_dir)
+        with TemporaryDirectory() as temp_dir:
+            frame_path = os.path.join(temp_dir, 'frame.png')
+            gif_path = get_temp_path('temp.gif')
+            mp4_path_1 = get_temp_path('temp1.mp4')
+            mp4_path_2 = get_temp_path('temp2.mp4')
+            video.get_first_frame(args.in_file, frame_path)
+            orig_img = Image.open(frame_path)
+            gif = filter_image(orig_img, args.caption, args.resize_ratio, args.settings_file, args.font_file)
+            gif.save(gif_path)
+            video.gif_to_mp4(gif_path, mp4_path_1, mp4_path_2)
+            video.merge_videos(mp4_path_2, args.in_file, args.out_file)
+            os.remove(frame_path)
     else:
         orig_img = Image.open(args.in_file)
         gif = filter_image(orig_img, args.caption, args.resize_ratio, args.settings_file, args.font_file)
