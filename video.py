@@ -14,7 +14,8 @@ def is_video(file):
 
 
 def gif_to_mp4(src, dest):
-    run_ffmpeg('-i "%s" -f lavfi -i aevalsrc=0 -shortest -y "%s"' % (src, dest))
+    run_ffmpeg('-i "%s" "%s"' % (src, dest))
+    run_ffmpeg('-i "%s" -f lavfi -i aevalsrc=0 -shortest -y "%s"' % (dest, dest))
 
 
 def merge_videos(src1, src2, dest):
