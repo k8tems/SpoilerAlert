@@ -21,7 +21,3 @@ def gif_to_mp4(src, dest1, dest2):
 
 def merge_videos(src1, src2, dest):
     run_ffmpeg('-i "%s" -i "%s" -filter_complex "[0:0][0:1][1:0][1:1] concat=n=2:v=1:a=1" "%s"' % (src1, src2, dest))
-
-
-if __name__ == '__main__':
-    gif_to_mp4('out.gif', 'out.mp4', 'out2.mp4')
