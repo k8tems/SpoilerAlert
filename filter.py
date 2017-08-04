@@ -160,14 +160,24 @@ class TemporaryDirectory(object):
         os.rmdir(self.dir)
 
 
+class TemporaryFile(object):
+    def __init__(self, temp_dir, fname):
+        self.file = os.path.join(temp_dir, fname)
+
+    def __enter__(self):
+        return self.file
+
+    def __exit__(self):
+        os.remove(self.file)
+
+
 def main():
     args = parse_args()
     if video.is_video(args.in_file):
         # `NamedTemporaryFile`はWindowsだとサブプロセスから開けないので自分で実装する必要がある
         # https://stackoverflow.com/questions/15169101/how-to-create-a-temporary-file-that-can-be-read-by-a-subprocess
-        with TemporaryDirectory() as temp_dir:
+        with TemporaryDirectory() as temp_dir, TemporaryFile(temp_dir, 'frame.png') as frame_path:
             logger.info('temp_dir ' + temp_dir)
-            frame_path = os.path.join(temp_dir, 'frame.png')
             logger.info('frame_path ' + frame_path)
             gif_path = get_temp_path('temp.gif')
             mp4_path_1 = get_temp_path('temp1.mp4')
