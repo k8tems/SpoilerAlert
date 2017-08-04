@@ -1,3 +1,8 @@
+"""
+テスト用スクリプト
+視覚的にうまく言ってるか確認したい
+"""
+
 import os
 from subprocess import check_output
 
