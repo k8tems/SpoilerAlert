@@ -6,7 +6,6 @@ import yaml
 from PIL import Image, ImageFilter, ImageFont, ImageDraw
 import video
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -50,7 +49,7 @@ def get_text_pos(img_size, text_size):
     img_width, img_height = img_size
     img_center_x = img_width / 2
     # 文字列は画像の上半分にレンダリングする
-    img_center_y = img_height * 1/4
+    img_center_y = img_height * 1 / 4
     text_width, text_height = text_size
     text_x = img_center_x - text_width / 2
     text_y = img_center_y - text_height / 2
@@ -66,9 +65,9 @@ def find_fitting_font(font_file, recommended_size, caption):
     for i in range(1, 500):
         font = ImageFont.truetype(font_file, size=i)
         if font.getsize(caption)[0] > recommended_width or \
-           font.getsize(caption)[1] > recommended_height:
+                        font.getsize(caption)[1] > recommended_height:
             return font
-    assert()
+    assert ()
 
 
 def render_caption(img, caption, font_file):
@@ -176,12 +175,15 @@ def main():
     if video.is_video(args.in_file):
         # `NamedTemporaryFile`はWindowsだとサブプロセスから開けないので自分で実装する必要がある
         # https://stackoverflow.com/questions/15169101/how-to-create-a-temporary-file-that-can-be-read-by-a-subprocess
-        with TemporaryDirectory() as temp_dir, TemporaryFile(temp_dir, 'frame.png') as frame_path:
+        with TemporaryDirectory() as temp_dir, \
+                TemporaryFile(temp_dir, 'frame.png') as frame_path, \
+                TemporaryFile(temp_dir, 'temp.gif') as gif_path, \
+                TemporaryFile(temp_dir, 'temp1.mp4') as mp4_path_1, \
+                TemporaryFile(temp_dir, 'temp2.mp4') as mp4_path_2:
             logger.info('temp_dir ' + temp_dir)
             logger.info('frame_path ' + frame_path)
-            gif_path = get_temp_path('temp.gif')
-            mp4_path_1 = get_temp_path('temp1.mp4')
-            mp4_path_2 = get_temp_path('temp2.mp4')
+            logger.info('mp4_path_1 ' + mp4_path_1)
+            logger.info('mp4_path_2 ' + mp4_path_2)
             video.get_first_frame(args.in_file, frame_path)
             orig_img = Image.open(frame_path)
             gif = filter_image(orig_img, args.caption, args.resize_ratio, args.settings_file, args.font_file)
