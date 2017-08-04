@@ -137,15 +137,21 @@ def filter_image(orig_img, caption, resize_ratio, settings_file, font_file):
     return gif
 
 
+def get_temp_path(fname):
+    return os.path.join(tempfile.gettempdir(), fname)
+
+
 def main():
     args = parse_args()
     if video.is_video(args.in_file):
-        frame_path = os.path.join(tempfile.gettempdir(), 'frame.png')
-        gif_path = os.path.join(tempfile.gettempdir(), 'out.gif')
+        frame_path = get_temp_path('temp.png')
+        gif_path = get_temp_path('temp.gif')
+        mp4_path = get_temp_path('temp.mp4')
         video.get_first_frame(args.in_file, frame_path)
         orig_img = Image.open(frame_path)
         gif = filter_image(orig_img, args.caption, args.resize_ratio, args.settings_file, args.font_file)
         gif.save(gif_path)
+        video.gif_to_mp4(gif_path, mp4_path)
     else:
         orig_img = Image.open(args.in_file)
         gif = filter_image(orig_img, args.caption, args.resize_ratio, args.settings_file, args.font_file)
