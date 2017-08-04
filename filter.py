@@ -99,7 +99,7 @@ def adjust_color_settings(settings):
 
 
 def load_settings(fname):
-    return  yaml.load(open(fname).read())
+    return yaml.load(open(fname).read())
 
 
 def parse_args():
