@@ -14,8 +14,9 @@ def serialize_file_size(file_size):
 
 
 if __name__ == '__main__':
-    in_file = 'video__in.mp4'
-    out_file = 'video__out.mp4'
+    output_path = os.path.join('output', 'video')
+    in_file = os.path.join(output_path, 'in.mp4')
+    out_file = os.path.join(output_path, 'out.mp4')
     cmd = 'python filter.py ' \
           'FFXVネタバレ ' \
           '%s ' \
