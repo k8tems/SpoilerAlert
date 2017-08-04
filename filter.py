@@ -1,6 +1,7 @@
 import argparse
 import yaml
 from PIL import Image, ImageFilter, ImageFont, ImageDraw
+import video
 
 
 def resize_img(img, resize_ratio):
@@ -110,15 +111,13 @@ def parse_args():
     return parser.parse_args()
 
 
-def main():
-    args = parse_args()
-    orig_img = Image.open(args.in_file)
-    orig_img = resize_img(orig_img, args.resize_ratio)
+def filter_image(orig_img, caption, resize_ratio, settings_file, font_file):
+    orig_img = resize_img(orig_img, resize_ratio)
 
     filtered_img = blur_img(orig_img)
-    filtered_img = render_caption(filtered_img, args.caption, args.font_file)
+    filtered_img = render_caption(filtered_img, caption, font_file)
 
-    settings = load_settings(args.settings_file)
+    settings = load_settings(settings_file)
     adjust_color_settings(settings['progress'])
 
     blur_duration = settings['blur']['duration']
@@ -133,7 +132,19 @@ def main():
     # 元の画像は適当に長めの数字に設定する
     # 数字はファイルの大きさに影響しない
     gif.append((orig_img, settings['original']['duration']))
-    gif.save(args.out_file)
+    return gif
+
+
+def main():
+    args = parse_args()
+    if video.is_video(args.in_file):
+        orig_img = video.get_first_frame(args.in_file)
+        gif = filter_image(orig_img, args.caption, args.resize_ratio, args.settings_file, args.font_file)
+        gif.save(args.out_file)
+    else:
+        orig_img = Image.open(args.in_file)
+        gif = filter_image(orig_img, args.caption, args.resize_ratio, args.settings_file, args.font_file)
+        gif.save(args.out_file)
 
 
 if __name__ == '__main__':
