@@ -140,14 +140,6 @@ def filter_image(orig_img, caption, resize_ratio, settings_file, font_file):
     return gif
 
 
-def get_temp_path(fname):
-    return os.path.join(tempfile.gettempdir(), fname)
-
-
-def temp_opener(name, flag, mode=0o777):
-    return os.open(name, flag | os.O_TEMPORARY, mode)
-
-
 class TemporaryDirectory(object):
     def __init__(self):
         self.dir = tempfile.mkdtemp()
