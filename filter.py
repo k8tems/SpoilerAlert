@@ -1,9 +1,13 @@
 import os
 import tempfile
 import argparse
+import logging.config
 import yaml
 from PIL import Image, ImageFilter, ImageFont, ImageDraw
 import video
+
+
+logger = logging.getLogger(__name__)
 
 
 def resize_img(img, resize_ratio):
@@ -162,7 +166,9 @@ def main():
         # `NamedTemporaryFile`はWindowsだとサブプロセスから開けないので自分で実装する必要がある
         # https://stackoverflow.com/questions/15169101/how-to-create-a-temporary-file-that-can-be-read-by-a-subprocess
         with TemporaryDirectory() as temp_dir:
+            logger.info('temp_dir ' + temp_dir)
             frame_path = os.path.join(temp_dir, 'frame.png')
+            logger.info('frame_path ' + frame_path)
             gif_path = get_temp_path('temp.gif')
             mp4_path_1 = get_temp_path('temp1.mp4')
             mp4_path_2 = get_temp_path('temp2.mp4')
@@ -180,4 +186,5 @@ def main():
 
 
 if __name__ == '__main__':
+    logging.config.dictConfig(yaml.load(open('log.yml')))
     main()
