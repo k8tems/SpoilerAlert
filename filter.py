@@ -1,10 +1,10 @@
-import os
-import tempfile
 import argparse
 import logging.config
 import yaml
 from PIL import Image, ImageFilter, ImageFont, ImageDraw
 import video
+from temp import TemporaryDirectory, TemporaryFile
+
 
 logger = logging.getLogger(__name__)
 
@@ -138,32 +138,6 @@ def filter_image(orig_img, caption, resize_ratio, settings_file, font_file):
     # 数字はファイルの大きさに影響しない
     gif.append((orig_img, settings['original']['duration']))
     return gif
-
-
-class TemporaryDirectory(object):
-    def __init__(self):
-        self.dir = tempfile.mkdtemp()
-
-    def __enter__(self):
-        return self.dir
-
-    def __exit__(self, *args, **kwargs):
-        os.rmdir(self.dir)
-
-
-def get_temp_file_name():
-    return tempfile._get_candidate_names().__next__()
-
-
-class TemporaryFile(object):
-    def __init__(self, temp_dir, extension):
-        self.file = os.path.join(temp_dir, '%s.%s' % (get_temp_file_name(), extension))
-
-    def __enter__(self):
-        return self.file
-
-    def __exit__(self, *args, **kwargs):
-        os.remove(self.file)
 
 
 def main():
