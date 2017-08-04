@@ -14,7 +14,7 @@ def serialize_file_size(file_size):
 
 
 if __name__ == '__main__':
-    out_file = 'mp4_out.gif'
+    out_file = 'out.mp4'
     cmd = 'python filter.py ' \
           'FFXVネタバレ ' \
           'test.mp4 ' \
