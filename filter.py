@@ -173,9 +173,6 @@ def main():
                 TemporaryFile(temp_dir, 'temp1.mp4') as mp4_path_1, \
                 TemporaryFile(temp_dir, 'temp2.mp4') as mp4_path_2:
             logger.info('temp_dir ' + temp_dir)
-            logger.info('frame_path ' + frame_path)
-            logger.info('mp4_path_1 ' + mp4_path_1)
-            logger.info('mp4_path_2 ' + mp4_path_2)
             video.get_first_frame(args.in_file, frame_path)
             orig_img = Image.open(frame_path)
             gif = filter_image(orig_img, args.caption, args.resize_ratio, args.settings_file, args.font_file)
