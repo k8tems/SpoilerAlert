@@ -1,3 +1,5 @@
+import os
+import tempfile
 import argparse
 import yaml
 from PIL import Image, ImageFilter, ImageFont, ImageDraw
@@ -138,10 +140,12 @@ def filter_image(orig_img, caption, resize_ratio, settings_file, font_file):
 def main():
     args = parse_args()
     if video.is_video(args.in_file):
-        video.get_first_frame(args.in_file, 'frame.png')
-        orig_img = Image.open('frame.png')
+        frame_path = os.path.join(tempfile.gettempdir(), 'frame.png')
+        gif_path = os.path.join(tempfile.gettempdir(), 'out.gif')
+        video.get_first_frame(args.in_file, frame_path)
+        orig_img = Image.open(frame_path)
         gif = filter_image(orig_img, args.caption, args.resize_ratio, args.settings_file, args.font_file)
-        gif.save(args.out_file)
+        gif.save(gif_path)
     else:
         orig_img = Image.open(args.in_file)
         gif = filter_image(orig_img, args.caption, args.resize_ratio, args.settings_file, args.font_file)
