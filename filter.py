@@ -109,7 +109,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('caption', type=str)
     parser.add_argument('in_file', type=str)
-    parser.add_argument('--out_file', type=str, default='out.gif')
+    parser.add_argument('out_file', type=str)
     parser.add_argument('--font_file', type=str, default='font.ttf')
     parser.add_argument('--resize_ratio', type=float, default=1.0)
     parser.add_argument('--settings_file', default='settings.yml')
