@@ -32,7 +32,7 @@ def run_image():
     cmd = 'python filter.py ' \
         'FFXVネタバレ ' \
         '%s ' \
-        '--out_file %s ' \
+        '%s ' \
         '--font_file font.ttf ' \
         '--resize_ratio %s ' \
         '--image_duration 10 ' \
@@ -48,7 +48,7 @@ def run_video():
     cmd = 'python filter.py ' \
         'FFXVネタバレ ' \
         '%s ' \
-        '--out_file %s ' \
+        '%s ' \
         '--font_file font.ttf ' \
         '--resize_ratio %s ' \
         '--settings_file custom.yml' % (in_file, out_file, 1)
