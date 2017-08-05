@@ -101,7 +101,7 @@ class ProgressRenderer(object):
         return img
 
     def render(self, progress):
-        self.render_progress(self.base_img, progress, self.settings)
+        return self.render_progress(self.base_img, progress, self.settings)
 
 
 def adjust_color_settings(settings):
