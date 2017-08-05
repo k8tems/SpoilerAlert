@@ -78,30 +78,30 @@ def render_caption(img, caption, font_file):
     return img
 
 
-def render_progress(img, progress, settings):
-    """
-    画像の下半分に左右から減っていくプログレスバーをレンダリングする
-    `progress`が0.0の場合最も長く、
-    `progress`が1.0の場合最も短い
-    """
-    img = img.copy()
-    progress_y = img.height * settings['y_ratio']
-    progress_x_margin = img.width * settings['x_initial_margin_ratio']
-    progress_initial_length = img.width - progress_x_margin * 2
-    progress_length = progress_initial_length * (1 - progress)
-    progress_x = img.width / 2 - progress_length / 2
-    crds = (progress_x, progress_y, progress_x + progress_length, progress_y)
-    ImageDraw.Draw(img).line(crds, fill=settings['color'], width=3)
-    return img
-
-
 class Progress(object):
     def __init__(self, base_img, settings):
         self.base_img = base_img
         self.settings = settings
 
+    @staticmethod
+    def render_progress(img, progress, settings):
+        """
+        画像の下半分に左右から減っていくプログレスバーをレンダリングする
+        `progress`が0.0の場合最も長く、
+        `progress`が1.0の場合最も短い
+        """
+        img = img.copy()
+        progress_y = img.height * settings['y_ratio']
+        progress_x_margin = img.width * settings['x_initial_margin_ratio']
+        progress_initial_length = img.width - progress_x_margin * 2
+        progress_length = progress_initial_length * (1 - progress)
+        progress_x = img.width / 2 - progress_length / 2
+        crds = (progress_x, progress_y, progress_x + progress_length, progress_y)
+        ImageDraw.Draw(img).line(crds, fill=settings['color'], width=3)
+        return img
+
     def render(self, progress):
-        render_progress(self.base_img, progress, self.settings)
+        self.render_progress(self.base_img, progress, self.settings)
 
 
 def adjust_color_settings(settings):
