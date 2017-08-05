@@ -13,7 +13,7 @@ def is_video(file):
     return file.endswith('mp4')
 
 
-def gif_to_mp4(src, dest1, dest2):
+def convert_from_gif(src, dest1, dest2):
     run_ffmpeg('-f gif -i "%s" "%s"' % (src, dest1))
     # Decoding will fail for this command if input and output file is the same
     run_ffmpeg('-i "%s" -f lavfi -i aevalsrc=0 -shortest -y "%s"' % (dest1, dest2))
