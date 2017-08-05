@@ -46,7 +46,7 @@ def run_video():
     in_file = os.path.join(output_path, 'in.mp4')
     out_file = os.path.join(output_path, 'out.mp4')
     cmd = 'python filter.py ' \
-        'FFXVネタバレ ' \
+        'DQ11ネタバレ ' \
         '%s ' \
         '%s ' \
         '--font_file font.ttf ' \
