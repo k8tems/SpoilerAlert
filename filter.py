@@ -95,6 +95,15 @@ def render_progress(img, progress, settings):
     return img
 
 
+class Progress(object):
+    def __init__(self, base_img, settings):
+        self.base_img = base_img
+        self.settings = settings
+
+    def render(self, progress):
+        render_progress(self.base_img, progress, self.settings)
+
+
 def adjust_color_settings(settings):
     # yamlはtuple型に対応していないのでここで変換する
     r, g, b = settings['color']
@@ -130,11 +139,11 @@ def filter_image(orig_img, caption, settings_file, font_file):
     frame_duration = blur_duration / num_blurred_frames
 
     gif = Gif()
+    progress = Progress(filtered_img, settings['progress'])
     for i in range(num_blurred_frames):
-        progress = i / num_blurred_frames
-        gif.append((render_progress(filtered_img, progress, settings['progress']), frame_duration))
+        gif.append((progress.render(i / num_blurred_frames), frame_duration))
     # 視覚的にプログレスが終わるようにフレームを追加する
-    gif.append((render_progress(filtered_img, 1.0, settings['progress']), 100))
+    gif.append((progress.render(1.0), 100))
     return gif
 
 
