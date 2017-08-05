@@ -5,7 +5,7 @@ def run_ffmpeg(cmd):
     check_output('bin/ffmpeg -y %s' % cmd)
 
 
-def get_first_frame(src, dest):
+def save_first_frame(src, dest):
     run_ffmpeg('-i "%s" -vf "select=eq(n\\,0)" -q:v 3 "%s"' % (src, dest))
 
 

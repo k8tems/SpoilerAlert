@@ -156,7 +156,7 @@ def process_video(args):
         logger.info('temp_dir ' + temp_dir)
         logger.info('filtered_path ' + filtered_path)
         logger.info('inaudible_video_path ' + inaudible_video_path)
-        video.get_first_frame(args.in_file, frame_path)
+        video.save_first_frame(args.in_file, frame_path)
         orig_img = Image.open(frame_path)
         gif = filter_image(orig_img, args.caption, args.settings_file, args.font_file)
         gif.save(filtered_path)
