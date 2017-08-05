@@ -30,13 +30,13 @@ def run_image():
     in_file = os.path.join(output_path, 'in.png')
     out_file = os.path.join(output_path, 'out.gif')
     cmd = 'python filter.py ' \
-        'FFXVネタバレ ' \
+        'DQ11ネタバレ ' \
         '%s ' \
         '%s ' \
         '--font_file font.ttf ' \
         '--resize_ratio %s ' \
-        '--image_duration 10 ' \
-        '--settings_file custom.yml' % (in_file, out_file, 1/3)
+        '--image_duration 60000 ' \
+        '--settings_file custom.yml' % (in_file, out_file, 1)
     run_command(cmd)
     print('ファイルサイズ:', serialize_file_size(os.path.getsize(out_file)))
 
