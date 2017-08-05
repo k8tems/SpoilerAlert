@@ -165,6 +165,10 @@ def main():
         gif.save(args.out_file)
 
 
-if __name__ == '__main__':
+def config_logging():
     logging.config.dictConfig(yaml.load(open('log.yml')))
+
+
+if __name__ == '__main__':
+    config_logging()
     main()
