@@ -50,8 +50,7 @@ def run_video():
         '%s ' \
         '%s ' \
         '--font_file font.ttf ' \
-        '--resize_ratio %s ' \
-        '--settings_file custom.yml' % (in_file, out_file, 1)
+        '--settings_file custom.yml' % (in_file, out_file)
     run_command(cmd)
     print('ファイルサイズ:', serialize_file_size(os.path.getsize(out_file)))
 
