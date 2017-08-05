@@ -145,34 +145,39 @@ def parse_args():
     return parser.parse_args()
 
 
+def process_video(args):
+    # `NamedTemporaryFile`はWindowsだとサブプロセスから開けないので自分で実装する必要がある
+    # https://stackoverflow.com/questions/15169101/how-to-create-a-temporary-file-that-can-be-read-by-a-subprocess
+    with TemporaryDirectory() as temp_dir, \
+            TemporaryFile(temp_dir, 'png') as frame_path, \
+            TemporaryFile(temp_dir, 'gif') as filtered_path, \
+            TemporaryFile(temp_dir, 'mp4') as inaudible_video_path, \
+            TemporaryFile(temp_dir, 'mp4') as audible_video_path:
+        logger.info('temp_dir ' + temp_dir)
+        logger.info('filtered_path ' + filtered_path)
+        logger.info('inaudible_video_path ' + inaudible_video_path)
+        video.get_first_frame(args.in_file, frame_path)
+        orig_img = Image.open(frame_path)
+        gif = filter_image(orig_img, args.caption, args.settings_file, args.font_file)
+        gif.save(filtered_path)
+        video.convert_from_gif(filtered_path, inaudible_video_path, audible_video_path)
+        video.merge_videos(audible_video_path, args.in_file, args.out_file)
+
+
+def process_image(args):
+    orig_img = Image.open(args.in_file)
+    # 画像を動画化するとファイルの大きさが気になるので節約するためにリサイズ
+    orig_img = resize_img(orig_img, args.resize_ratio)
+    gif = filter_image(orig_img, args.caption, args.settings_file, args.font_file)
+    # 元の画像は適当に長めの数字に設定する
+    # 数字はファイルの大きさに影響しない
+    gif.append((orig_img, args.image_duration))
+    gif.save(args.out_file)
+
+
 def main():
     args = parse_args()
-    if video.is_video(args.in_file):
-        # `NamedTemporaryFile`はWindowsだとサブプロセスから開けないので自分で実装する必要がある
-        # https://stackoverflow.com/questions/15169101/how-to-create-a-temporary-file-that-can-be-read-by-a-subprocess
-        with TemporaryDirectory() as temp_dir, \
-                TemporaryFile(temp_dir, 'png') as frame_path, \
-                TemporaryFile(temp_dir, 'gif') as filtered_path, \
-                TemporaryFile(temp_dir, 'mp4') as inaudible_video_path, \
-                TemporaryFile(temp_dir, 'mp4') as audible_video_path:
-            logger.info('temp_dir ' + temp_dir)
-            logger.info('filtered_path ' + filtered_path)
-            logger.info('inaudible_video_path ' + inaudible_video_path)
-            video.get_first_frame(args.in_file, frame_path)
-            orig_img = Image.open(frame_path)
-            gif = filter_image(orig_img, args.caption, args.settings_file, args.font_file)
-            gif.save(filtered_path)
-            video.convert_from_gif(filtered_path, inaudible_video_path, audible_video_path)
-            video.merge_videos(audible_video_path, args.in_file, args.out_file)
-    else:
-        orig_img = Image.open(args.in_file)
-        # 画像を動画化するとファイルの大きさが気になるので節約するためにリサイズ
-        orig_img = resize_img(orig_img, args.resize_ratio)
-        gif = filter_image(orig_img, args.caption, args.settings_file, args.font_file)
-        # 元の画像は適当に長めの数字に設定する
-        # 数字はファイルの大きさに影響しない
-        gif.append((orig_img, args.image_duration))
-        gif.save(args.out_file)
+    process_video(args) if video.is_video(args.in_file) else process_image(args)
 
 
 def config_logging():
