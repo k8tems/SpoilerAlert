@@ -111,20 +111,6 @@ def load_settings(fname):
     return yaml.load(open(fname).read())
 
 
-def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('caption', type=str)
-    parser.add_argument('in_file', type=str)
-    parser.add_argument('out_file', type=str)
-    parser.add_argument('--font_file', type=str, default='font.ttf')
-    parser.add_argument('--settings_file', default='settings.yml')
-    parser.add_argument('--resize_ratio', type=float, default=1.0,
-                        help='gif化する前に画像をリサイズする時の比率(入力が動画の場合は無視される')
-    parser.add_argument('--image_duration', type=int, default=60000,
-                        help='元の画像が静止画として再生されるms単位の時間(入力が動画の場合は無視される)')
-    return parser.parse_args()
-
-
 def filter_image(orig_img, caption, settings_file, font_file):
     filtered_img = blur_img(orig_img)
     filtered_img = render_caption(filtered_img, caption, font_file)
@@ -143,6 +129,20 @@ def filter_image(orig_img, caption, settings_file, font_file):
     # 視覚的にプログレスが終わるようにフレームを追加する
     gif.append((progress_renderer.render(1.0), 100))
     return gif
+
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('caption', type=str)
+    parser.add_argument('in_file', type=str)
+    parser.add_argument('out_file', type=str)
+    parser.add_argument('--font_file', type=str, default='font.ttf')
+    parser.add_argument('--settings_file', default='settings.yml')
+    parser.add_argument('--resize_ratio', type=float, default=1.0,
+                        help='gif化する前に画像をリサイズする時の比率(入力が動画の場合は無視される')
+    parser.add_argument('--image_duration', type=int, default=60000,
+                        help='元の画像が静止画として再生されるms単位の時間(入力が動画の場合は無視される)')
+    return parser.parse_args()
 
 
 def main():
