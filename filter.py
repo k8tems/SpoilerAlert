@@ -10,10 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 def resize_img(img, resize_ratio):
-    """
-    画像を指定の倍率に調節する
-    画像を動画化するとファイルの大きさが気になるので節約用
-    """
+    """画像を指定の倍率に調節する"""
     img_width, img_height = img.size
     return img.resize((int(img_width * resize_ratio), int(img_height * resize_ratio)))
 
@@ -169,6 +166,7 @@ def main():
             video.merge_videos(audible_video_path, args.in_file, args.out_file)
     else:
         orig_img = Image.open(args.in_file)
+        # 画像を動画化するとファイルの大きさが気になるので節約するためにリサイズ
         orig_img = resize_img(orig_img, args.resize_ratio)
         gif = filter_image(orig_img, args.caption, args.settings_file, args.font_file)
         # 元の画像は適当に長めの数字に設定する
