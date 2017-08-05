@@ -22,7 +22,8 @@ def add_dummy_audio(src, dest):
 
 
 def convert_from_gif(gif_path, inaudible_video_path, audible_video_path):
-    run_ffmpeg('-f gif -i "%s" "%s"' % (gif_path, inaudible_video_path))
+    # ツイッターがピクセルフォーマットYUV4:2:0にのみ対応してる
+    run_ffmpeg('-f gif -i "%s" -pix_fmt "yuv420p" "%s"' % (gif_path, inaudible_video_path))
     add_dummy_audio(inaudible_video_path, audible_video_path)
 
 
