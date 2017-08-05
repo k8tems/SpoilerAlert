@@ -1,6 +1,12 @@
 import argparse
+import logging.config
 import yaml
 from PIL import Image, ImageFilter, ImageFont, ImageDraw
+import video
+from temp import TemporaryDirectory, TemporaryFile
+
+
+logger = logging.getLogger(__name__)
 
 
 def resize_img(img, resize_ratio):
@@ -43,7 +49,7 @@ def get_text_pos(img_size, text_size):
     img_width, img_height = img_size
     img_center_x = img_width / 2
     # 文字列は画像の上半分にレンダリングする
-    img_center_y = img_height * 1/4
+    img_center_y = img_height * 1 / 4
     text_width, text_height = text_size
     text_x = img_center_x - text_width / 2
     text_y = img_center_y - text_height / 2
@@ -59,9 +65,9 @@ def find_fitting_font(font_file, recommended_size, caption):
     for i in range(1, 500):
         font = ImageFont.truetype(font_file, size=i)
         if font.getsize(caption)[0] > recommended_width or \
-           font.getsize(caption)[1] > recommended_height:
+                        font.getsize(caption)[1] > recommended_height:
             return font
-    assert()
+    assert ()
 
 
 def render_caption(img, caption, font_file):
@@ -96,7 +102,7 @@ def adjust_color_settings(settings):
 
 
 def load_settings(fname):
-    return  yaml.load(open(fname).read())
+    return yaml.load(open(fname).read())
 
 
 def parse_args():
@@ -110,15 +116,13 @@ def parse_args():
     return parser.parse_args()
 
 
-def main():
-    args = parse_args()
-    orig_img = Image.open(args.in_file)
-    orig_img = resize_img(orig_img, args.resize_ratio)
+def filter_image(orig_img, caption, resize_ratio, settings_file, font_file):
+    orig_img = resize_img(orig_img, resize_ratio)
 
     filtered_img = blur_img(orig_img)
-    filtered_img = render_caption(filtered_img, args.caption, args.font_file)
+    filtered_img = render_caption(filtered_img, caption, font_file)
 
-    settings = load_settings(args.settings_file)
+    settings = load_settings(settings_file)
     adjust_color_settings(settings['progress'])
 
     blur_duration = settings['blur']['duration']
@@ -133,8 +137,38 @@ def main():
     # 元の画像は適当に長めの数字に設定する
     # 数字はファイルの大きさに影響しない
     gif.append((orig_img, settings['original']['duration']))
-    gif.save(args.out_file)
+    return gif
+
+
+def main():
+    args = parse_args()
+    if video.is_video(args.in_file):
+        # `NamedTemporaryFile`はWindowsだとサブプロセスから開けないので自分で実装する必要がある
+        # https://stackoverflow.com/questions/15169101/how-to-create-a-temporary-file-that-can-be-read-by-a-subprocess
+        with TemporaryDirectory() as temp_dir, \
+                TemporaryFile(temp_dir, 'png') as frame_path, \
+                TemporaryFile(temp_dir, 'gif') as filtered_path, \
+                TemporaryFile(temp_dir, 'mp4') as inaudible_video_path, \
+                TemporaryFile(temp_dir, 'mp4') as audible_video_path:
+            logger.info('temp_dir ' + temp_dir)
+            logger.info('filtered_path ' + filtered_path)
+            logger.info('inaudible_video_path ' + inaudible_video_path)
+            video.get_first_frame(args.in_file, frame_path)
+            orig_img = Image.open(frame_path)
+            gif = filter_image(orig_img, args.caption, args.resize_ratio, args.settings_file, args.font_file)
+            gif.save(filtered_path)
+            video.gif_to_mp4(filtered_path, inaudible_video_path, audible_video_path)
+            video.merge_videos(audible_video_path, args.in_file, args.out_file)
+    else:
+        orig_img = Image.open(args.in_file)
+        gif = filter_image(orig_img, args.caption, args.resize_ratio, args.settings_file, args.font_file)
+        gif.save(args.out_file)
+
+
+def config_logging():
+    logging.config.dictConfig(yaml.load(open('log.yml')))
 
 
 if __name__ == '__main__':
+    config_logging()
     main()

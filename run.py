@@ -1,3 +1,8 @@
+"""
+テスト用スクリプト
+視覚的にうまく言ってるか確認したい
+"""
+
 import os
 from subprocess import check_output
 
@@ -13,14 +18,38 @@ def serialize_file_size(file_size):
             return '%f %s' % (file_size / s, t)
 
 
-if __name__ == '__main__':
-    out_file = 'out.gif'
+def run_image():
+    output_path = os.path.join('output', 'image')
+    in_file = os.path.join(output_path, 'in.png')
+    out_file = os.path.join(output_path, 'out.gif')
     cmd = 'python filter.py ' \
-          'FFXVネタバレ ' \
-          'test.png ' \
-          '--out_file %s ' \
-          '--font_file font.ttf ' \
-          '--resize_ratio %s ' \
-          '--settings_file custom.yml' % (out_file, 1/5)
-    check_output(cmd, shell=True).decode()
+        'FFXVネタバレ ' \
+        '%s ' \
+        '--out_file %s ' \
+        '--font_file font.ttf ' \
+        '--resize_ratio %s ' \
+        '--settings_file custom.yml' % (in_file, out_file, 1/3)
+    output = check_output(cmd, shell=True).decode()
+    print(output)
     print('ファイルサイズ:', serialize_file_size(os.path.getsize(out_file)))
+
+
+def run_video():
+    output_path = os.path.join('output', 'video')
+    in_file = os.path.join(output_path, 'in.mp4')
+    out_file = os.path.join(output_path, 'out.mp4')
+    cmd = 'python filter.py ' \
+        'FFXVネタバレ ' \
+        '%s ' \
+        '--out_file %s ' \
+        '--font_file font.ttf ' \
+        '--resize_ratio %s ' \
+        '--settings_file custom.yml' % (in_file, out_file, 1)
+    output = check_output(cmd, shell=True).decode()
+    print(output)
+    print('ファイルサイズ:', serialize_file_size(os.path.getsize(out_file)))
+
+
+if __name__ == '__main__':
+    run_image()
+    run_video()

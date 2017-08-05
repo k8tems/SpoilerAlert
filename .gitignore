@@ -1,5 +1,6 @@
 .idea
 venv.bat
-out.gif
 font.ttf
 custom.yml
+log.txt
+output
