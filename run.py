@@ -4,7 +4,7 @@
 """
 
 import os
-from subprocess import check_output
+from subprocess import check_output, CalledProcessError
 
 
 def serialize_file_size(file_size):
@@ -18,6 +18,13 @@ def serialize_file_size(file_size):
             return '%f %s' % (file_size / s, t)
 
 
+def run_command(cmd):
+    try:
+        print(check_output(cmd, shell=True).decode())
+    except CalledProcessError as e:
+        print(e.output)
+
+
 def run_image():
     output_path = os.path.join('output', 'image')
     in_file = os.path.join(output_path, 'in.png')
@@ -28,9 +35,9 @@ def run_image():
         '--out_file %s ' \
         '--font_file font.ttf ' \
         '--resize_ratio %s ' \
+        '--image_duration 10 ' \
         '--settings_file custom.yml' % (in_file, out_file, 1/3)
-    output = check_output(cmd, shell=True).decode()
-    print(output)
+    run_command(cmd)
     print('ファイルサイズ:', serialize_file_size(os.path.getsize(out_file)))
 
 
@@ -45,8 +52,7 @@ def run_video():
         '--font_file font.ttf ' \
         '--resize_ratio %s ' \
         '--settings_file custom.yml' % (in_file, out_file, 1)
-    output = check_output(cmd, shell=True).decode()
-    print(output)
+    run_command(cmd)
     print('ファイルサイズ:', serialize_file_size(os.path.getsize(out_file)))
 
 
