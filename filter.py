@@ -161,7 +161,7 @@ def process_video(args):
         gif = filter_image(orig_img, args.caption, args.settings_file, args.font_file)
         gif.save(filtered_path)
         video.convert_from_gif(filtered_path, inaudible_video_path, audible_video_path)
-        video.merge_videos(audible_video_path, args.in_file, args.out_file)
+        video.merge(audible_video_path, args.in_file, args.out_file)
 
 
 def process_image(args):

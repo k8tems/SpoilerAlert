@@ -26,5 +26,5 @@ def convert_from_gif(gif_path, inaudible_video_path, audible_video_path):
     add_dummy_audio(inaudible_video_path, audible_video_path)
 
 
-def merge_videos(src1, src2, dest):
+def merge(src1, src2, dest):
     run_ffmpeg('-i "%s" -i "%s" -filter_complex "[0:0][0:1][1:0][1:1] concat=n=2:v=1:a=1" "%s"' % (src1, src2, dest))
