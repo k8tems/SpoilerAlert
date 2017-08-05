@@ -139,11 +139,11 @@ def filter_image(orig_img, caption, settings_file, font_file):
     frame_duration = blur_duration / num_blurred_frames
 
     gif = Gif()
-    progress = ProgressRenderer(filtered_img, settings['progress'])
+    progress_renderer = ProgressRenderer(filtered_img, settings['progress'])
     for i in range(num_blurred_frames):
-        gif.append((progress.render(i / num_blurred_frames), frame_duration))
+        gif.append((progress_renderer.render(i / num_blurred_frames), frame_duration))
     # 視覚的にプログレスが終わるようにフレームを追加する
-    gif.append((progress.render(1.0), 100))
+    gif.append((progress_renderer.render(1.0), 100))
     return gif
 
 
