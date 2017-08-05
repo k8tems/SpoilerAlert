@@ -116,9 +116,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def filter_image(orig_img, caption, resize_ratio, settings_file, font_file):
-    orig_img = resize_img(orig_img, resize_ratio)
-
+def filter_image(orig_img, caption, settings_file, font_file):
     filtered_img = blur_img(orig_img)
     filtered_img = render_caption(filtered_img, caption, font_file)
 
@@ -155,13 +153,14 @@ def main():
             logger.info('inaudible_video_path ' + inaudible_video_path)
             video.get_first_frame(args.in_file, frame_path)
             orig_img = Image.open(frame_path)
-            gif = filter_image(orig_img, args.caption, args.resize_ratio, args.settings_file, args.font_file)
+            gif = filter_image(orig_img, args.caption, args.settings_file, args.font_file)
             gif.save(filtered_path)
             video.gif_to_mp4(filtered_path, inaudible_video_path, audible_video_path)
             video.merge_videos(audible_video_path, args.in_file, args.out_file)
     else:
         orig_img = Image.open(args.in_file)
-        gif = filter_image(orig_img, args.caption, args.resize_ratio, args.settings_file, args.font_file)
+        orig_img = resize_img(orig_img, args.resize_ratio)
+        gif = filter_image(orig_img, args.caption, args.settings_file, args.font_file)
         gif.save(args.out_file)
 
 
