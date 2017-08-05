@@ -120,8 +120,9 @@ def parse_args():
     parser.add_argument('in_file', type=str)
     parser.add_argument('out_file', type=str)
     parser.add_argument('--font_file', type=str, default='font.ttf')
-    parser.add_argument('--resize_ratio', type=float, default=1.0)
     parser.add_argument('--settings_file', default='settings.yml')
+    parser.add_argument('--resize_ratio', type=float, default=1.0,
+                        help='gif化する前に画像をリサイズする時の比率(入力が動画の場合は無視される')
     parser.add_argument('--image_duration', type=int, default=60000,
                         help='元の画像が静止画として再生されるms単位の時間(入力が動画の場合は無視される)')
     return parser.parse_args()
