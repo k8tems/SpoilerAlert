@@ -132,9 +132,6 @@ def filter_image(orig_img, caption, settings_file, font_file):
         gif.append((render_progress(filtered_img, progress, settings['progress']), blur_duration / blurred_frames))
     # 視覚的にプログレスが終わるようにフレームを追加する
     gif.append((render_progress(filtered_img, 1.0, settings['progress']), 100))
-    # 元の画像は適当に長めの数字に設定する
-    # 数字はファイルの大きさに影響しない
-    gif.append((orig_img, settings['original']['duration']))
     return gif
 
 
@@ -161,6 +158,9 @@ def main():
         orig_img = Image.open(args.in_file)
         orig_img = resize_img(orig_img, args.resize_ratio)
         gif = filter_image(orig_img, args.caption, args.settings_file, args.font_file)
+        # 元の画像は適当に長めの数字に設定する
+        # 数字はファイルの大きさに影響しない
+        gif.append((orig_img, 60000))
         gif.save(args.out_file)
 
 
