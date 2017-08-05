@@ -126,12 +126,13 @@ def filter_image(orig_img, caption, settings_file, font_file):
     adjust_color_settings(settings['progress'])
 
     blur_duration = settings['blur']['duration']
-    blurred_frames = settings['blur']['frames']
+    num_blurred_frames = settings['blur']['frames']
+    frame_duration = blur_duration / num_blurred_frames
 
     gif = Gif()
-    for i in range(blurred_frames):
-        progress = i / blurred_frames
-        gif.append((render_progress(filtered_img, progress, settings['progress']), blur_duration / blurred_frames))
+    for i in range(num_blurred_frames):
+        progress = i / num_blurred_frames
+        gif.append((render_progress(filtered_img, progress, settings['progress']), frame_duration))
     # 視覚的にプログレスが終わるようにフレームを追加する
     gif.append((render_progress(filtered_img, 1.0, settings['progress']), 100))
     return gif
