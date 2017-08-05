@@ -5,5 +5,3 @@ progress:
 blur:
     duration: 1500
     frames: 20
-original:
-    duration: 100000
