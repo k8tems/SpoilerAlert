@@ -29,7 +29,6 @@ filter.py \
     input.mp4 \
     --out_file output.mp4 \
     --font_file font.ttf \
-    --resize_ratio 1 \
     --settings_file settings.yml
 ```
 
