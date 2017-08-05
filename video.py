@@ -2,7 +2,7 @@ from subprocess import check_output
 
 
 def run_ffmpeg(cmd):
-    check_output('bin\\ffmpeg -y %s' % cmd)
+    check_output('bin/ffmpeg -y %s' % cmd)
 
 
 def get_first_frame(src, dest):
