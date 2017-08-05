@@ -113,6 +113,8 @@ def parse_args():
     parser.add_argument('--font_file', type=str, default='font.ttf')
     parser.add_argument('--resize_ratio', type=float, default=1.0)
     parser.add_argument('--settings_file', default='settings.yml')
+    parser.add_argument('--image_duration', default=60000,
+                        help='元の画像が静止画として再生される時間(入力が動画の場合は無視される)')
     return parser.parse_args()
 
 
@@ -160,7 +162,7 @@ def main():
         gif = filter_image(orig_img, args.caption, args.settings_file, args.font_file)
         # 元の画像は適当に長めの数字に設定する
         # 数字はファイルの大きさに影響しない
-        gif.append((orig_img, 60000))
+        gif.append((orig_img, args.image_duration))
         gif.save(args.out_file)
 
 
