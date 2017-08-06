@@ -70,10 +70,3 @@ def merge(src1, src2, dest):
         encode_to_ts(src2, ts2)
         merge_ts(ts1, ts2, merged_ts)
         encode_to_browser_format(merged_ts, dest)
-
-
-if __name__ == '__main__':
-    output_path = 'output/quality_ts'
-    merge(output_path + '/audible.mp4',
-          output_path + '/in.mp4',
-          output_path + '/out.mp4')
