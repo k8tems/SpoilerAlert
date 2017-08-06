@@ -42,7 +42,7 @@ def merge_ts(src1, src2, dest):
                '-c copy -bsf:a aac_adtstoasc %s' % (src1, src2, dest))
 
 
-def merge2(src1, src2, ts1, ts2, dest1, dest2):
+def merge(src1, src2, ts1, ts2, dest1, dest2):
     """
     `-filter_complex`でやると元動画がモッサリして、
     `concat demux`でやると元の動画がスローになってしまう
@@ -57,9 +57,9 @@ def merge2(src1, src2, ts1, ts2, dest1, dest2):
 
 if __name__ == '__main__':
     output_path = 'output/quality_ts'
-    merge2(output_path + '/audible.mp4',
-           output_path + '/in.mp4',
-           output_path + '/intermediate1.ts',
-           output_path + '/intermediate2.ts',
-           output_path + '/out.mp4',
-           output_path + '/out2.mp4')
+    merge(output_path + '/audible.mp4',
+          output_path + '/in.mp4',
+          output_path + '/intermediate1.ts',
+          output_path + '/intermediate2.ts',
+          output_path + '/out.mp4',
+          output_path + '/out2.mp4')
