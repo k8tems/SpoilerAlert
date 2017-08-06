@@ -36,6 +36,11 @@ def encode_to_browser_format(src, dest):
                '-preset slow -profile:v baseline -movflags faststart %s' % (src, dest))
 
 
+def encode_as_ts(src, dest):
+    """h264/aac形式の動画をts形式に変換する"""
+    run_ffmpeg('-i %s -c copy -bsf:v h264_mp4toannexb -f mpegts %s' % (src, dest))
+
+
 def merge2(src1, src2, ts1, ts2, dest1, dest2):
     """
     `-filter_complex`でやると元動画がモッサリして、
@@ -43,8 +48,8 @@ def merge2(src1, src2, ts1, ts2, dest1, dest2):
     ts形式として結合するとシームレスに動くけどブラウザで再生出来ないので、
     最後にブラウザが理解出来る形式に再エンコードする
     """
-    run_ffmpeg('-i %s -c copy -bsf:v h264_mp4toannexb -f mpegts %s' % (src1, ts1))
-    run_ffmpeg('-i %s -c copy -bsf:v h264_mp4toannexb -f mpegts %s' % (src2, ts2))
+    encode_as_ts(src1, ts1)
+    encode_as_ts(src2, ts2)
     run_ffmpeg('-i "concat:%s|%s" '
                '-c copy -bsf:a aac_adtstoasc %s' % (ts1, ts2, dest1))
     encode_to_browser_format(dest1, dest2)
