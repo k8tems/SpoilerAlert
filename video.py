@@ -41,6 +41,11 @@ def encode_as_ts(src, dest):
     run_ffmpeg('-i %s -c copy -bsf:v h264_mp4toannexb -f mpegts %s' % (src, dest))
 
 
+def merge_ts(src1, src2, dest):
+    run_ffmpeg('-i "concat:%s|%s" '
+               '-c copy -bsf:a aac_adtstoasc %s' % (src1, src2, dest))
+
+
 def merge2(src1, src2, ts1, ts2, dest1, dest2):
     """
     `-filter_complex`でやると元動画がモッサリして、
@@ -50,8 +55,7 @@ def merge2(src1, src2, ts1, ts2, dest1, dest2):
     """
     encode_as_ts(src1, ts1)
     encode_as_ts(src2, ts2)
-    run_ffmpeg('-i "concat:%s|%s" '
-               '-c copy -bsf:a aac_adtstoasc %s' % (ts1, ts2, dest1))
+    merge_ts(ts1, ts2, dest1)
     encode_to_browser_format(dest1, dest2)
 
 
