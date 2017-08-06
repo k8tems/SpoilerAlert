@@ -23,6 +23,7 @@ def run_command(cmd):
         print(check_output(cmd, shell=True).decode())
     except CalledProcessError as e:
         print(e.output)
+        raise
 
 
 def run_image():
