@@ -29,3 +29,25 @@ def convert_from_gif(gif_path, inaudible_video_path, audible_video_path):
 
 def merge(src1, src2, dest):
     run_ffmpeg('-i "%s" -i "%s" -filter_complex "[0:0][0:1][1:0][1:1] concat=n=2:v=1:a=1" "%s"' % (src1, src2, dest))
+
+
+def merge2(src1, src2, ts1, ts2, dest):
+    """
+    `-filter_complex`でやると元動画がモッサリして、
+    `concat demux`でやると元の動画がスローになってしまう
+    ts形式として結合するとシームレスに動くけどブラウザで再生出来ないので、
+    最後にブラウザが理解出来る形式に再エンコードする
+    """
+    run_ffmpeg('-i %s -c copy -bsf:v h264_mp4toannexb -f mpegts %s' % (src1, ts1))
+    run_ffmpeg('-i %s -c copy -bsf:v h264_mp4toannexb -f mpegts %s' % (src2, ts2))
+    run_ffmpeg('-i "concat:%s|%s" '
+               '-c copy -bsf:a aac_adtstoasc %s' % (ts1, ts2, dest))
+
+
+if __name__ == '__main__':
+    output_path = 'output/quality_ts'
+    merge2(output_path + '/audible.mp4',
+           output_path + '/in.mp4',
+           output_path + '/intermediate1.ts',
+           output_path + '/intermediate2.ts',
+           output_path + '/out.mp4')
