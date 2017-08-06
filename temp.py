@@ -1,15 +1,21 @@
 import os
+import logging
 import tempfile
+
+
+logger = logging.getLogger(__name__)
 
 
 class TemporaryDirectory(object):
     def __init__(self):
         self.dir = tempfile.mkdtemp()
+        logger.info('created directory ' + self.dir)
 
     def __enter__(self):
         return self.dir
 
     def __exit__(self, *args, **kwargs):
+        logger.info('removing directory ' + self.dir)
         os.rmdir(self.dir)
 
 
@@ -20,11 +26,13 @@ def get_temp_file_name():
 class TemporaryFile(object):
     def __init__(self, temp_dir, extension):
         self.file = os.path.join(temp_dir, '%s.%s' % (get_temp_file_name(), extension))
+        logger.info('created file ' + self.file)
 
     def __enter__(self):
         return self.file
 
     def __exit__(self, *args, **kwargs):
+        logger.info('removing file ' + self.file)
         os.remove(self.file)
 
 
