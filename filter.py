@@ -152,10 +152,7 @@ def process_video(args):
             TemporaryFile(temp_dir, 'png') as frame_path, \
             TemporaryFile(temp_dir, 'gif') as filtered_path, \
             TemporaryFile(temp_dir, 'mp4') as inaudible_video_path, \
-            TemporaryFile(temp_dir, 'mp4') as audible_video_path, \
-            TemporaryFile(temp_dir, 'ts') as ts1_path, \
-            TemporaryFile(temp_dir, 'ts') as ts2_path, \
-            TemporaryFile(temp_dir, 'ts') as preencode_video_path:
+            TemporaryFile(temp_dir, 'mp4') as audible_video_path:
         logger.info('temp_dir ' + temp_dir)
         logger.info('filtered_path ' + filtered_path)
         logger.info('inaudible_video_path ' + inaudible_video_path)
