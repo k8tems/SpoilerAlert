@@ -1,8 +1,13 @@
 from subprocess import check_output
+import logging
 from temp import TemporaryDirectory, TemporaryFile, StandaloneTemporaryFile
 
 
+logger = logging.getLogger(__name__)
+
+
 def run_ffmpeg(cmd):
+    logger.info('executing ' + cmd)
     check_output('bin/ffmpeg -y %s' % cmd)
 
 
@@ -22,7 +27,7 @@ def add_dummy_audio(src, dest):
     run_ffmpeg('-i "%s" -f lavfi -i aevalsrc=0 -shortest -y "%s"' % (src, dest))
 
 
-def convert_from_gif(gif_path, inaudible_video_path, audible_video_path):
+def convert_from_gif(gif_path, audible_video_path):
     # ツイッターがピクセルフォーマットYUV4:2:0にのみ対応してる
     with StandaloneTemporaryFile('mp4') as inaudible_video_path:
         run_ffmpeg('-f gif -i "%s" -pix_fmt "yuv420p" "%s"' % (gif_path, inaudible_video_path))

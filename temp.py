@@ -24,18 +24,25 @@ def get_temp_file_name():
     return tempfile._get_candidate_names().__next__()
 
 
+def touch(fname):
+    open(fname, 'a').close()
+
+
 class TemporaryFile(object):
     def __init__(self, temp_dir, extension):
-        self.file = os.path.join(temp_dir, '%s.%s' % (get_temp_file_name(), extension))
-        logger.info('created file ' + self.file)
+        self.fname = os.path.join(temp_dir, '%s.%s' % (get_temp_file_name(), extension))
+        # 仮にffmpegのコマンドが実行されなくてファイルが生成されなくても
+        # 削除がエラーを返さないように空のファイルを生成しておく
+        touch(self.fname)
+        logger.info('created file ' + self.fname)
 
     def __enter__(self):
-        return self.file
+        return self.fname
 
     def __exit__(self, *args, **kwargs):
-        logger.info('removing file ' + self.file)
-        os.remove(self.file)
-        logger.info('removed file ' + self.file)
+        logger.info('removing file ' + self.fname)
+        os.remove(self.fname)
+        logger.info('removed file ' + self.fname)
 
 
 class StandaloneTemporaryFile(object):
