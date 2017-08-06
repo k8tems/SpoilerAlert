@@ -148,6 +148,8 @@ def parse_args():
 def process_video(args):
     # `NamedTemporaryFile`はWindowsだとサブプロセスから開けないので自分で実装する必要がある
     # https://stackoverflow.com/questions/15169101/how-to-create-a-temporary-file-that-can-be-read-by-a-subprocess
+    # サブルーチン内で一時ファイルを生成/削除するより
+    # ここで全部生成して明確にレイヤー分けした方が小回りが利く気がする
     with TemporaryDirectory() as temp_dir, \
             TemporaryFile(temp_dir, 'png') as frame_path, \
             TemporaryFile(temp_dir, 'gif') as filtered_path, \
