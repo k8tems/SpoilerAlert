@@ -26,3 +26,16 @@ class TemporaryFile(object):
 
     def __exit__(self, *args, **kwargs):
         os.remove(self.file)
+
+
+class StandaloneTemporaryFile(object):
+    def __init__(self, extension):
+        self.dir = tempfile.mkdtemp()
+        self.file = os.path.join(self.dir, '%s.%s' % (get_temp_file_name(), extension))
+
+    def __enter__(self):
+        return self.file
+
+    def __exit__(self, *args, **kwargs):
+        os.rmdir(self.dir)
+        os.remove(self.file)
