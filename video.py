@@ -1,4 +1,5 @@
 from subprocess import check_output
+from temp import TemporaryDirectory, TemporaryFile
 
 
 def run_ffmpeg(cmd):
@@ -49,10 +50,14 @@ def merge(src1, src2, ts1, ts2, dest1, dest2):
     ts形式として結合するとシームレスに動くけどブラウザで再生出来ないので、
     最後にブラウザが理解出来る形式に再エンコードする
     """
-    encode_to_ts(src1, ts1)
-    encode_to_ts(src2, ts2)
-    merge_ts(ts1, ts2, dest1)
-    encode_to_browser_format(dest1, dest2)
+    with TemporaryDirectory() as temp_dir, \
+            TemporaryFile(temp_dir, 'ts') as ts1, \
+            TemporaryFile(temp_dir, 'ts') as ts2, \
+            TemporaryFile(temp_dir, 'mp4') as dest1:
+        encode_to_ts(src1, ts1)
+        encode_to_ts(src2, ts2)
+        merge_ts(ts1, ts2, dest1)
+        encode_to_browser_format(dest1, dest2)
 
 
 if __name__ == '__main__':
