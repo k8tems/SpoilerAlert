@@ -37,5 +37,6 @@ class StandaloneTemporaryFile(object):
         return self.file.__enter__()
 
     def __exit__(self, *args, **kwargs):
+        # ディレクトリを空にしてから削除する必要がある
         self.file.__exit__(*args, **kwargs)
         self.dir.__exit__(*args, **kwargs)
