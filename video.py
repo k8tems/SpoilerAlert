@@ -27,10 +27,6 @@ def convert_from_gif(gif_path, inaudible_video_path, audible_video_path):
     add_dummy_audio(inaudible_video_path, audible_video_path)
 
 
-def merge(src1, src2, dest):
-    run_ffmpeg('-i "%s" -i "%s" -filter_complex "[0:0][0:1][1:0][1:1] concat=n=2:v=1:a=1" "%s"' % (src1, src2, dest))
-
-
 def encode_to_browser_format(src, dest):
     run_ffmpeg('-i %s -s hd720 -vcodec libx264 -vcodec libx264 -pix_fmt yuv420p '
                '-preset slow -profile:v baseline -movflags faststart %s' % (src, dest))
