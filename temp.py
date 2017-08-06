@@ -31,7 +31,7 @@ class TemporaryFile(object):
 class StandaloneTemporaryFile(object):
     def __init__(self, extension):
         self.dir = TemporaryDirectory()
-        self.file = TemporaryFile(self.dir, extension)
+        self.file = TemporaryFile(self.dir.__enter__(), extension)
 
     def __enter__(self):
         return self.file.__enter__()
