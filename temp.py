@@ -30,12 +30,13 @@ class TemporaryFile(object):
 
 class StandaloneTemporaryFile(object):
     def __init__(self, extension):
-        self.dir = tempfile.mkdtemp()
-        self.file = os.path.join(self.dir, '%s.%s' % (get_temp_file_name(), extension))
+        self.dir = TemporaryDirectory()
+        self.file = TemporaryFile(self.dir, extension)
 
     def __enter__(self):
-        return self.file
+        return self.file.__enter__()
 
     def __exit__(self, *args, **kwargs):
-        os.rmdir(self.dir)
-        os.remove(self.file)
+        self.dir.__exit__(*args, **kwargs)
+        self.file.__exit__(*args, **kwargs)
+
