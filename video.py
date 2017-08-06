@@ -70,7 +70,4 @@ if __name__ == '__main__':
     output_path = 'output/quality_ts'
     merge(output_path + '/audible.mp4',
           output_path + '/in.mp4',
-          output_path + '/intermediate1.ts',
-          output_path + '/intermediate2.ts',
-          output_path + '/out.mp4',
-          output_path + '/out2.mp4')
+          output_path + '/out.mp4')
