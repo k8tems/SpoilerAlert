@@ -43,7 +43,7 @@ def merge_ts(src1, src2, dest):
                '-c copy -bsf:a aac_adtstoasc %s' % (src1, src2, dest))
 
 
-def merge(src1, src2, ts1, ts2, merged_ts, dest):
+def merge(src1, src2, dest):
     """
     `-filter_complex`でやると元動画がモッサリして、
     `concat demux`でやると元の動画がスローになってしまう
