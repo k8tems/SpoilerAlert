@@ -39,4 +39,3 @@ class StandaloneTemporaryFile(object):
     def __exit__(self, *args, **kwargs):
         self.dir.__exit__(*args, **kwargs)
         self.file.__exit__(*args, **kwargs)
-
