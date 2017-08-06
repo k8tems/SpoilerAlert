@@ -17,6 +17,7 @@ class TemporaryDirectory(object):
     def __exit__(self, *args, **kwargs):
         logger.info('removing directory ' + self.dir)
         os.rmdir(self.dir)
+        logger.info('removed directory ' + self.dir)
 
 
 def get_temp_file_name():
@@ -34,6 +35,7 @@ class TemporaryFile(object):
     def __exit__(self, *args, **kwargs):
         logger.info('removing file ' + self.file)
         os.remove(self.file)
+        logger.info('removed file ' + self.file)
 
 
 class StandaloneTemporaryFile(object):
