@@ -22,7 +22,8 @@ def run_command(cmd):
     try:
         print(check_output(cmd, shell=True).decode())
     except CalledProcessError as e:
-        print(e.output)
+        for i in e.output.decode('utf-8').split('\n'):
+            print(i)
         raise
 
 
