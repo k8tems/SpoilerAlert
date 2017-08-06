@@ -152,7 +152,10 @@ def process_video(args):
             TemporaryFile(temp_dir, 'png') as frame_path, \
             TemporaryFile(temp_dir, 'gif') as filtered_path, \
             TemporaryFile(temp_dir, 'mp4') as inaudible_video_path, \
-            TemporaryFile(temp_dir, 'mp4') as audible_video_path:
+            TemporaryFile(temp_dir, 'mp4') as audible_video_path, \
+            TemporaryFile(temp_dir, 'ts') as ts1_path, \
+            TemporaryFile(temp_dir, 'ts') as ts2_path, \
+            TemporaryFile(temp_dir, 'ts') as preencode_video_path:
         logger.info('temp_dir ' + temp_dir)
         logger.info('filtered_path ' + filtered_path)
         logger.info('inaudible_video_path ' + inaudible_video_path)
@@ -161,7 +164,7 @@ def process_video(args):
         gif = filter_image(orig_img, args.caption, args.settings_file, args.font_file)
         gif.save(filtered_path)
         video.convert_from_gif(filtered_path, inaudible_video_path, audible_video_path)
-        video.merge(audible_video_path, args.in_file, args.out_file)
+        video.merge2(audible_video_path, args.in_file, ts1_path, ts2_path, preencode_video_path, args.out_file)
 
 
 def process_image(args):
