@@ -31,6 +31,11 @@ def merge(src1, src2, dest):
     run_ffmpeg('-i "%s" -i "%s" -filter_complex "[0:0][0:1][1:0][1:1] concat=n=2:v=1:a=1" "%s"' % (src1, src2, dest))
 
 
+def encode_to_browser_format(src, dest):
+    run_ffmpeg('-i %s -s hd720 -vcodec libx264 -vcodec libx264 -pix_fmt yuv420p '
+               '-preset slow -profile:v baseline -movflags faststart %s' % (src, dest))
+
+
 def merge2(src1, src2, ts1, ts2, dest1, dest2):
     """
     `-filter_complex`でやると元動画がモッサリして、
@@ -42,8 +47,7 @@ def merge2(src1, src2, ts1, ts2, dest1, dest2):
     run_ffmpeg('-i %s -c copy -bsf:v h264_mp4toannexb -f mpegts %s' % (src2, ts2))
     run_ffmpeg('-i "concat:%s|%s" '
                '-c copy -bsf:a aac_adtstoasc %s' % (ts1, ts2, dest1))
-    run_ffmpeg('-i %s -s hd720 -vcodec libx264 -vcodec libx264 -pix_fmt yuv420p '
-               '-preset slow -profile:v baseline -movflags faststart %s' % (dest1, dest2))
+    encode_to_browser_format(dest1, dest2)
 
 
 if __name__ == '__main__':
